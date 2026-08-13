@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { items: CollectionEntry<'noticias'>[]; }
+const { items } = Astro.props;
+function excerpt(html: string, words = 15) {
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const parts = text.split(' ');
+  return parts.slice(0, words).join(' ') + (parts.length > words ? '…' : '');
+}
+---
+{items.length > 0 && (
+  <div class="container" style="margin-bottom:60px;">
+    <div class="conteudos-sugeridos mt-5">
+      <div class="d-flex align-items-center justify-content-between">
+        <h2 class="title-main-section">Conteúdo Sugerido <span></span></h2>
+        <a href="/noticias/" class="btn btn-primary" style="color:#111; font-weight: bold;">Veja Mais</a>
+      </div>
+      <div class="row">
+        {items.map((n) => (
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+              {n.data.image && (
+                <a href={`/noticias/${n.data.slug}.html`}><img src={n.data.image} class="img-fluid" alt={n.data.title} /></a>
+              )}
+              <div class="card-body">
+                <h5 class="card-title">{n.data.title}</h5>
+                <p class="card-text">{excerpt(n.data.html)}</p>
+                <a href={`/noticias/${n.data.slug}.html`} class="btn btn-sm btn-warning text-dark fw-semibold">Ler mais</a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}

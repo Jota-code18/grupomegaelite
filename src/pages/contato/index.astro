@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Localizacao from '../../components/Localizacao.astro';
+import site from '../../data/site.json';
+---
+<Base title="Contato">
+  <Breadcrumbs items={[{ label: 'Contato' }]} />
+  <section class="py-5">
+    <div class="container">
+      <h2 class="title-main-section">Fale com a gente!<span></span></h2>
+      <p>
+        Estamos prontos para atender você pelo
+        <a href={site.contato.whatsapp_link} target="_blank" rel="noopener" style="color:#25D366; text-decoration:none;">{site.contato.whatsapp_display}</a>,
+        ou, se preferir, envie um e-mail para
+        <a href="mailto:contato@grupomegaelite.com.br?subject=Contato%20pelo%20site" style="color:#0073e6; text-decoration:none;">{site.contato.email}</a>
+        <br />
+        Faça-nos uma visita: <strong>{site.contato.address}</strong>
+      </p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="mega-form row g-3 mt-2">
+        <input type="hidden" name="access_key" value={site.web3forms_key} />
+        <input type="hidden" name="subject" value="Novo contato pelo site Mega Elite" />
+        <input type="hidden" name="from_name" value="Site Mega Elite" />
+        <input type="checkbox" name="botcheck" style="display:none !important;" tabindex="-1" autocomplete="off" />
+
+        <div class="col-md-6">
+          <label class="form-label">Nome</label>
+          <input type="text" name="name" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">E-mail</label>
+          <input type="email" name="email" class="form-control" required />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Assunto</label>
+          <input type="text" name="assunto" class="form-control" required />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Mensagem</label>
+          <textarea name="message" rows="5" class="form-control" required></textarea>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary" style="color:#111; font-weight:bold;">Enviar</button>
+        </div>
+      </form>
+    </div>
+
+    <Localizacao />
+  </section>
+</Base>

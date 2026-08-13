@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import PostNav from '../../components/PostNav.astro';
+import ConteudosSugeridos from '../../components/ConteudosSugeridos.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const items = (await getCollection('noticias')).sort(
+    (a, b) => (a.data.date || '').localeCompare(b.data.date || '')
+  );
+  return items.map((entry, i) => ({
+    params: { slug: entry.data.slug },
+    props: {
+      entry,
+      prev: i > 0 ? { href: `/noticias/${items[i - 1].data.slug}.html`, title: items[i - 1].data.title } : null,
+      next: i < items.length - 1 ? { href: `/noticias/${items[i + 1].data.slug}.html`, title: items[i + 1].data.title } : null,
+    },
+  }));
+}
+const { entry, prev, next } = Astro.props;
+const sugeridos = (await getCollection('noticias')).filter((n) => n.data.slug !== entry.data.slug).slice(0, 3);
+const words = entry.data.html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const readingTime = Math.max(1, Math.ceil(words / 200));
+const permalink = `https://grupomegaelite.com.br/noticias/${entry.data.slug}.html`;
+---
+<Base title={entry.data.title}>
+  <Breadcrumbs items={[{ label: 'Notícias', href: '/noticias/' }, { label: entry.data.title }]} />
+  <div class="container mt-4 mb-5">
+    <div class="row g-4">
+      <div class="col-lg-9 col-md-9">
+        <article class="card post-single mb-4">
+          <div class="card-body">
+            <header class="post-header mb-4">
+              <h1 class="post-title display-5 fw-bold text-dark mb-3">{entry.data.title}</h1>
+              <div class="post-meta d-flex flex-wrap align-items-center gap-3 pb-3 mb-4 border-bottom text-muted">
+                <span class="post-category d-flex align-items-center">
+                  <i class="fas fa-folder me-2 text-primary"></i>
+                  <a href="/noticias/" class="badge bg-primary bg-opacity-10 text-primary text-decoration-none me-1">Notícias</a>
+                </span>
+                <span class="post-reading-time d-flex align-items-center">
+                  <i class="fas fa-clock me-2 text-primary"></i>{readingTime} min de leitura
+                </span>
+              </div>
+            </header>
+
+            {entry.data.image && (
+              <div class="post-thumbnail mb-4">
+                <figure class="figure w-100 text-center">
+                  <img src={entry.data.image} class="figure-img img-fluid rounded shadow-sm w-100" style="max-height:500px; object-fit:cover;" alt={entry.data.title} />
+                </figure>
+              </div>
+            )}
+
+            <div class="post-content mb-5">
+              <div class="content-wrapper" set:html={entry.data.html}></div>
+            </div>
+          </div>
+        </article>
+
+        <ShareButtons url={permalink} title={entry.data.title} />
+        <PostNav prev={prev} next={next} />
+      </div>
+      <Sidebar />
+    </div>
+  </div>
+  <ConteudosSugeridos items={sugeridos} />
+</Base>

@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import Faq from '../../components/home/Faq.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const items = await getCollection('servicos');
+  return items.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const faqs = (await getCollection('faq')).slice(0, 6);
+---
+<Base title={entry.data.title}>
+  <Breadcrumbs items={[{ label: 'Serviços', href: '/servicos/' }, { label: entry.data.title }]} />
+  <div class="container">
+    <div class="row mb-3">
+      <article class="card col-lg-9 col-md-8 col-12">
+        <div class="page-content card-body">
+          <header class="post-header mb-4">
+            <h1 class="post-title display-5 fw-bold text-dark mb-3">{entry.data.title}</h1>
+          </header>
+          <div class="post-content mb-5">
+            <div class="content-wrapper" set:html={entry.data.html}></div>
+          </div>
+        </div>
+      </article>
+      <Sidebar />
+    </div>
+  </div>
+  <Faq items={faqs} />
+</Base>

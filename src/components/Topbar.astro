@@ -1,0 +1,21 @@
+---
+import site from '../data/site.json';
+---
+<style>
+  @media (max-width: 767.98px) {
+    .text-end { text-align: center !important; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="container">
+    <div class="row">
+      <div class="d-none d-md-block col-md-9">
+        <span><i class="fas fa-map-marker-alt"></i> Localização:</span> {site.topbar.address}
+      </div>
+      <div class="col-sm-12 col-md-3 text-end">
+        <span><i class="fab fa-whatsapp me-1"></i> {site.topbar.phone_label}:</span> {site.topbar.phone}
+      </div>
+    </div>
+  </div>
+</div>

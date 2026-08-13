@@ -1,0 +1,36 @@
+---
+import site from '../../data/site.json';
+const slides = site.slideshow;
+---
+<div id="carouselSlides" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    {slides.map((_, i) => (
+      <button
+        type="button"
+        data-bs-target="#carouselSlides"
+        data-bs-slide-to={i}
+        class={i === 0 ? 'active' : undefined}
+        aria-current={i === 0 ? 'true' : undefined}
+        aria-label={`Slide ${i + 1}`}></button>
+    ))}
+  </div>
+
+  <div class="carousel-inner">
+    {slides.map((s, i) => (
+      <div class={`carousel-item${i === 0 ? ' active' : ''}`}>
+        <a href={s.link}>
+          <img src={s.img} class="d-block w-100" alt={s.alt} />
+        </a>
+      </div>
+    ))}
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselSlides" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselSlides" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Próximo</span>
+  </button>
+</div>

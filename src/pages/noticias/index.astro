@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { getCollection } from 'astro:content';
+
+function excerpt(html: string, words = 25) {
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const parts = text.split(' ');
+  return parts.slice(0, words).join(' ') + (parts.length > words ? '…' : '');
+}
+function dateBR(d?: string) {
+  if (!d) return '';
+  const [y, m, day] = d.slice(0, 10).split('-');
+  return `${day}.${m}.${y}`;
+}
+const noticias = (await getCollection('noticias')).sort(
+  (a, b) => (b.data.date || '').localeCompare(a.data.date || '')
+);
+---
+<Base title="Notícias">
+  <Breadcrumbs items={[{ label: 'Notícias' }]} />
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-lg-9 col-md-9">
+        <header class="mb-5">
+          <h1 class="display-5 fw-bold mb-3">Notícias</h1>
+        </header>
+
+        <div class="row g-4 mb-5">
+          {noticias.map((n) => (
+            <div class="col-md-6">
+              <article class="card h-100 shadow-sm">
+                {n.data.image && (
+                  <div class="card-img-top overflow-hidden" style="height:200px;">
+                    <a href={`/noticias/${n.data.slug}.html`} class="d-block h-100">
+                      <img src={n.data.image} class="img-fluid w-100" alt={n.data.title} />
+                    </a>
+                  </div>
+                )}
+                <div class="card-body d-flex flex-column">
+                  <h2 class="card-title h5 mb-3">
+                    <a href={`/noticias/${n.data.slug}.html`} class="text-decoration-none text-dark stretched-link">{n.data.title}</a>
+                  </h2>
+                  <div class="card-text mb-3 small text-muted">
+                    <span class="me-3"><i class="fas fa-calendar-alt me-1"></i>{dateBR(n.data.date)}</span>
+                  </div>
+                  <div class="card-text flex-grow-1 mb-3">{excerpt(n.data.html)}</div>
+                  <div class="mt-auto">
+                    <span class="btn btn-outline-primary btn-sm">Ler mais <i class="fas fa-arrow-right ms-1"></i></span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          ))}
+        </div>
+      </div>
+      <Sidebar />
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,17 @@
+---
+interface Props { url: string; title: string; }
+const { url, title } = Astro.props;
+const u = encodeURIComponent(url);
+const t = encodeURIComponent(title);
+---
+<div class="social-share card mb-4">
+  <div class="card-body">
+    <h6 class="fw-bold mb-3">Compartilhar:</h6>
+    <div class="d-flex flex-wrap gap-2">
+      <a href={`https://www.facebook.com/sharer/sharer.php?u=${u}`} target="_blank" rel="noopener" class="btn btn-sm" style="color:#FFF; background-color:#3b5998; border-color:#3b5998;"><i class="fab fa-facebook-f me-1"></i> Facebook</a>
+      <a href={`https://twitter.com/intent/tweet?url=${u}&text=${t}`} target="_blank" rel="noopener" class="btn btn-sm" style="color:#FFF; background-color:#00acee; border-color:#00acee;"><i class="fab fa-twitter me-1"></i> Twitter</a>
+      <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${u}`} target="_blank" rel="noopener" class="btn btn-sm" style="color:#FFF; background-color:#0077b5; border-color:#0077b5;"><i class="fab fa-linkedin-in me-1"></i> LinkedIn</a>
+      <a href={`https://wa.me/?text=${encodeURIComponent(title + ' - ' + url)}`} target="_blank" rel="noopener" class="btn btn-sm" style="color:#FFF; background-color:#25d366; border-color:#25d366;"><i class="fab fa-whatsapp me-1"></i> WhatsApp</a>
+    </div>
+  </div>
+</div>

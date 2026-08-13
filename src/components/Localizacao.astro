@@ -1,0 +1,21 @@
+---
+import site from '../data/site.json';
+---
+<section class="localizacao">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 mx-auto text-center">
+        <h2 class="title-main-section">Onde Estamos<span></span></h2>
+      </div>
+    </div>
+  </div>
+  <iframe
+    src={site.maps_embed}
+    width="100%"
+    height="600"
+    style="border:0;"
+    allowfullscreen
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    title="Localização Mega Elite"></iframe>
+</section>

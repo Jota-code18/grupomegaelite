@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getCollection } from 'astro:content';
+
+const servicos = (await getCollection('servicos')).sort(
+  (a, b) => (a.data.date || '').localeCompare(b.data.date || '')
+);
+---
+<Base title="Serviços">
+  <Breadcrumbs items={[{ label: 'Serviços' }]} />
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <header class="mb-4">
+          <h1 class="display-5 fw-bold mb-3">Serviços</h1>
+        </header>
+
+        <div class="row g-4 mb-5">
+          {servicos.map((s) => (
+            <div class="col-md-4">
+              <article class="card shadow-sm">
+                <div class="card-img-top">
+                  <a href={`/servicos/${s.data.slug}.html`} class="d-block">
+                    <img src={s.data.image} class="img-fluid" alt={s.data.title} />
+                  </a>
+                </div>
+                <a class="title-servicos-page" href={`/servicos/${s.data.slug}.html`}>{s.data.title}</a>
+              </article>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>

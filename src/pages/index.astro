@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Slideshow from '../components/home/Slideshow.astro';
+import Servicos from '../components/home/Servicos.astro';
+import Empresa from '../components/home/Empresa.astro';
+import Noticias from '../components/home/Noticias.astro';
+import Faq from '../components/home/Faq.astro';
+import Localizacao from '../components/Localizacao.astro';
+import { getCollection } from 'astro:content';
+
+const servicos = (await getCollection('servicos')).sort(
+  (a, b) => (a.data.date || '').localeCompare(b.data.date || '')
+);
+const noticias = await getCollection('noticias');
+const faqs = await getCollection('faq');
+---
+<Base>
+  <Slideshow />
+  <Servicos items={servicos.slice(0, 4)} />
+  <Empresa />
+  <Noticias items={noticias.slice(0, 3)} />
+  <Faq items={faqs.slice(0, 6)} />
+  <Localizacao />
+</Base>

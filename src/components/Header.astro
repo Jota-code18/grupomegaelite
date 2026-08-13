@@ -1,0 +1,31 @@
+---
+import site from '../data/site.json';
+const path = Astro.url.pathname.replace(/\/index\.html$/, '/');
+---
+<header class="site-header">
+  <div class="container p-0">
+    <div class="d-flex align-items-center justify-content-center justify-content-md-between">
+      <div class="col-md-auto mb-2 mb-md-0">
+        <a href="/" class="d-inline-flex" rel="home">
+          <img src="/img/logo.png" alt={site.name} class="img-fluid" />
+        </a>
+      </div>
+
+      <nav class="d-none d-md-block main-navigation col-md-auto justify-content-center">
+        <ul class="nav mb-2 mb-md-0" id="primary-menu">
+          {site.menu.map((m) => (
+            <li class="nav-item">
+              <a class={`nav-link${m.href === path ? ' active' : ''}`} href={m.href}>{m.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="d-none d-md-block col-md-auto text-end">
+        <a href={site.cta.href} class="btn btn-primary" style="color:#111; font-weight: bold;">
+          <i class="fab fa-whatsapp me-1"></i> {site.cta.label}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const recent = (await getCollection('noticias')).slice(0, 5);
+---
+<Base title="Página não encontrada">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="text-center mb-5">
+          <header class="mb-4">
+            <h1 class="display-1 mb-3">404</h1>
+            <h2 class="h3 text-dark mb-3">Página Não Encontrada</h2>
+            <p class="lead text-muted">Desculpe, a página que você está procurando não existe.</p>
+          </header>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-8 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3 class="card-title h5 mb-3"><i class="fas fa-clock me-2"></i>Conteúdo recente:</h3>
+                <ul class="list-group list-group-flush">
+                  {recent.map((n) => (
+                    <li class="list-group-item px-0 border-0">
+                      <a href={`/noticias/${n.data.slug}.html`} class="text-decoration-none text-dark">
+                        <i class="fas fa-chevron-right me-2"></i>{n.data.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="/" class="btn btn-primary btn-lg px-4" style="color:#111; font-weight:bold;"><i class="fas fa-home me-2"></i>Voltar ao Início</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>

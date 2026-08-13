@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('paginas');
+  return pages.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<Base title={entry.data.title}>
+  <Breadcrumbs items={[{ label: entry.data.title }]} />
+  <div class="container">
+    <div class="row">
+      <article class="card col-lg-9 col-md-8 col-12 mb-4">
+        <div class="page-content card-body">
+          <header class="page-header mb-4 pb-3 border-bottom">
+            <h1 class="page-title display-5 fw-bold text-dark mb-0">{entry.data.title}</h1>
+          </header>
+          <div class="page-content-text">
+            <div class="content-wrapper" set:html={entry.data.html}></div>
+          </div>
+        </div>
+      </article>
+      <Sidebar />
+    </div>
+  </div>
+</Base>

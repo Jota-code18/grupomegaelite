@@ -1,0 +1,41 @@
+---
+import site from '../data/site.json';
+---
+<div class="tarja-logo">
+  <img src="/img/logo-grande.png" alt={site.name} class="img-fluid" />
+</div>
+
+<footer class="footer_02">
+  <div class="container">
+    <div class="col-md-12 text-center py-5">
+      <div class="d-flex justify-content-center gap-4">
+        <a href={site.socials.facebook} target="_blank" rel="noopener" class="btn btn-sm d-flex align-items-center justify-content-center" style="width:45px; height:45px; background-color:#d4a017; color:#fff; border-radius:6px;">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href={site.socials.instagram} target="_blank" rel="noopener" class="btn btn-sm d-flex align-items-center justify-content-center" style="width:45px; height:45px; background-color:#d4a017; color:#fff; border-radius:6px;">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href={site.socials.whatsapp} target="_blank" rel="noopener" class="btn btn-sm d-flex align-items-center justify-content-center" style="width:45px; height:45px; background-color:#d4a017; color:#fff; border-radius:6px;">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="copy">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-sm-12">
+        <strong>2025 | {site.blogname}</strong>
+        Preços e condições de pagamento válidos exclusivamente para compras efetuadas no site. <br />
+        As imagens dos produtos são meramente ilustrativas. Todos os preços e condições comerciais estão sujeitos a alteração sem aviso prévio.
+      </div>
+      <div class="col-lg-2 col-sm-12 text-center">
+        <a href="https://kaleb.com.br/" target="_blank" rel="noopener">
+          <img width="60" src="https://produtosmatao.com.br/wp-content/themes/produtos-matao/public/img/kaleb-logo.jpg" alt="Kaleb" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

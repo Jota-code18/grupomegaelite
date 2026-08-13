@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { items: CollectionEntry<'noticias'>[]; }
+const { items } = Astro.props;
+---
+<section class="section_001">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+      <h2 class="title-main-section">Novidades Semanais<span></span></h2>
+      <a href="/noticias/" class="btn btn-primary" style="color:#111; font-weight: bold;">Confira Mais</a>
+    </div>
+
+    <div class="row">
+      {items.map((n) => (
+        <div class="col-md-4 mb-4">
+          <div class="card-noticias-home">
+            <a href={`/noticias/${n.data.slug}.html`}><figure><img src={n.data.image} alt={n.data.title} /></figure></a>
+            <a href={`/noticias/${n.data.slug}.html`}><h5>{n.data.title}</h5></a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
