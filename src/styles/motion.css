@@ -1,0 +1,132 @@
+/* ============================================================
+   Sistema de motion — Mega Elite
+   Peso (skill Motion Principles): Jakub (polimento de produção)
+   + Jhey (deleite seletivo) + Emil (contenção em nav/formulário).
+   Regra de ouro: a melhor animação passa despercebida.
+   Só anima com propósito (feedback, orientação, continuidade).
+   Estados escondidos só existem sob .js-motion → funciona sem JS
+   e é totalmente neutralizado por prefers-reduced-motion.
+   ============================================================ */
+
+/* Transições de página nativas (MPA): enter/exit suave entre páginas.
+   Progressive enhancement — navegadores sem suporte navegam normal. */
+@view-transition {
+  navigation: auto;
+}
+
+/* ---- Revelação ao rolar (entrada) ------------------------- */
+.js-motion :is(
+    .title-main-section, .my-card-site, .card-noticias-home, article.card,
+    .galeria-carrossel-wrapper, .empresa .row, .accordion, .post-navigation,
+    .social-share, .conteudos-sugeridos
+  ) {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.js-motion :is(
+    .title-main-section, .my-card-site, .card-noticias-home, article.card,
+    .galeria-carrossel-wrapper, .empresa .row, .accordion, .post-navigation,
+    .social-share, .conteudos-sugeridos
+  ).is-revealed {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* ---- Imagens: lazy fade-in -------------------------------- */
+.js-motion img.img-fx {
+  opacity: 0;
+}
+.js-motion img.img-fx.is-loaded {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* ---- Skeleton shimmer enquanto a imagem carrega ----------- */
+.media-skeleton {
+  position: relative;
+  background: #e7e7ec;
+  overflow: hidden;
+}
+.media-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: mega-shimmer 1.3s infinite;
+}
+.media-skeleton.is-loaded {
+  background: none;
+}
+.media-skeleton.is-loaded::after {
+  content: none;
+  animation: none;
+}
+@keyframes mega-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ---- Barra de progresso de navegação ---------------------- */
+.route-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--cor1, #fac922);
+  box-shadow: 0 0 8px rgba(250, 201, 34, 0.75);
+  z-index: 4000;
+  opacity: 0;
+  pointer-events: none;
+}
+.route-progress.is-active {
+  opacity: 1;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.route-progress.is-done {
+  transform: scaleX(1) !important;
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.3s ease 0.12s;
+}
+
+/* ---- Micro-interações (feedback) -------------------------- */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .my-card-site,
+  .card-noticias-home {
+    transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.25s ease;
+  }
+  .my-card-site:hover,
+  .card-noticias-home:hover {
+    transform: translateY(-5px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn {
+    transition: transform 0.14s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+}
+
+/* ---- Reduced motion: neutraliza tudo, mantém estados finais */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .media-skeleton::after {
+    display: none;
+  }
+}

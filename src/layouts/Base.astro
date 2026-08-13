@@ -4,6 +4,7 @@ import Topbar from '../components/Topbar.astro';
 import Header from '../components/Header.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import Footer from '../components/Footer.astro';
+import '../styles/motion.css';
 
 interface Props {
   title?: string;
@@ -21,6 +22,17 @@ const fullTitle = title ? `${title} – ${site.name}` : site.name;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {description && <meta name="description" content={description} />}
     <title>{fullTitle}</title>
+
+    <!-- Ativa o motion antes do paint (evita flash) — só se o usuário não pediu menos movimento -->
+    <script is:inline>
+      (function () {
+        try {
+          if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+            document.documentElement.classList.add('js-motion');
+          }
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Meta Pixel Code -->
     <script is:inline>
@@ -57,12 +69,94 @@ const fullTitle = title ? `${title} – ${site.name}` : site.name;
     <Header />
     <MobileMenu />
 
-    <slot />
+    <main>
+      <slot />
+    </main>
 
     <Footer />
 
     <script is:inline src="/js/jquery.min.js"></script>
     <script is:inline src="/js/bootstrap.bundle.min.js"></script>
     <script is:inline src="/js/js.js"></script>
+
+    <!-- Motion: revelação ao rolar, lazy/fade/skeleton de imagens, barra de progresso -->
+    <script is:inline>
+      (function () {
+        if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        // Revelação ao rolar (entrada)
+        var sel =
+          '.title-main-section, .my-card-site, .card-noticias-home, article.card, .galeria-carrossel-wrapper, .empresa .row, .accordion, .post-navigation, .social-share, .conteudos-sugeridos';
+        var targets = Array.prototype.slice.call(document.querySelectorAll(sel));
+        document.querySelectorAll('.row').forEach(function (row) {
+          var i = 0;
+          row.querySelectorAll('.my-card-site, .card-noticias-home').forEach(function (c) {
+            c.style.setProperty('--reveal-delay', (i % 4) * 70 + 'ms');
+            i++;
+          });
+        });
+        if ('IntersectionObserver' in window && targets.length) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add('is-revealed');
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { rootMargin: '0px 0px -8% 0px', threshold: 0.06 }
+          );
+          targets.forEach(function (el) { io.observe(el); });
+          // Segurança: revela tudo depois de 1,5s (nada fica preso)
+          setTimeout(function () { targets.forEach(function (el) { el.classList.add('is-revealed'); }); }, 1500);
+        } else {
+          targets.forEach(function (el) { el.classList.add('is-revealed'); });
+        }
+
+        // Imagens: lazy + fade-in + skeleton (pula logos, topbar e o slideshow-herói)
+        document.querySelectorAll('img').forEach(function (img) {
+          if (img.closest('.site-header, footer, .footer_02, .topbar, .tarja-logo, #carouselSlides')) return;
+          if (!img.hasAttribute('loading')) img.loading = 'lazy';
+          img.decoding = 'async';
+          img.classList.add('img-fx');
+          var fig = img.closest('figure, .card-img-top, .post-thumbnail');
+          if (fig) fig.classList.add('media-skeleton');
+          var done = function () {
+            img.classList.add('is-loaded');
+            if (fig) fig.classList.add('is-loaded');
+          };
+          if (img.complete && img.naturalWidth) done();
+          else {
+            img.addEventListener('load', done, { once: true });
+            img.addEventListener('error', done, { once: true });
+          }
+        });
+
+        // Barra de progresso de navegação (só aparece se demorar > 180ms)
+        var bar = document.createElement('div');
+        bar.className = 'route-progress';
+        document.body.appendChild(bar);
+        var timer;
+        document.addEventListener(
+          'click',
+          function (ev) {
+            var a = ev.target.closest ? ev.target.closest('a') : null;
+            if (!a) return;
+            var href = a.getAttribute('href') || '';
+            if (a.target === '_blank' || a.hasAttribute('download')) return;
+            if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+            if (/^https?:\/\//.test(href) && a.host !== location.host) return;
+            if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button !== 0) return;
+            timer = setTimeout(function () {
+              bar.classList.add('is-active');
+              requestAnimationFrame(function () { bar.style.transform = 'scaleX(0.85)'; });
+            }, 180);
+          },
+          true
+        );
+        window.addEventListener('pagehide', function () { clearTimeout(timer); });
+      })();
+    </script>
   </body>
 </html>
