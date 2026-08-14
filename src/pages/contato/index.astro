@@ -18,34 +18,99 @@ import site from '../../data/site.json';
         Faça-nos uma visita: <strong>{site.contato.address}</strong>
       </p>
 
-      <form action="https://api.web3forms.com/submit" method="POST" class="mega-form row g-3 mt-2">
-        <input type="hidden" name="access_key" value={site.web3forms_key} />
-        <input type="hidden" name="subject" value="Novo contato pelo site Mega Elite" />
-        <input type="hidden" name="from_name" value="Site Mega Elite" />
-        <input type="checkbox" name="botcheck" style="display:none !important;" tabindex="-1" autocomplete="off" />
-
+      <form
+        class="mega-form row g-3 mt-2"
+        data-whatsapp={site.form_whatsapp}
+        data-email={site.form_email}
+        novalidate
+      >
         <div class="col-md-6">
-          <label class="form-label">Nome</label>
-          <input type="text" name="name" class="form-control" required />
+          <label class="form-label" for="f-nome">Nome</label>
+          <input type="text" id="f-nome" name="nome" class="form-control" required autocomplete="name" />
         </div>
         <div class="col-md-6">
-          <label class="form-label">E-mail</label>
-          <input type="email" name="email" class="form-control" required />
+          <label class="form-label" for="f-telefone">Telefone</label>
+          <input type="tel" id="f-telefone" name="telefone" class="form-control" autocomplete="tel" placeholder="(62) 90000-0000" />
         </div>
         <div class="col-12">
-          <label class="form-label">Assunto</label>
-          <input type="text" name="assunto" class="form-control" required />
+          <label class="form-label" for="f-assunto">Assunto</label>
+          <input type="text" id="f-assunto" name="assunto" class="form-control" required placeholder="Ex.: orçamento de portaria remota" />
         </div>
         <div class="col-12">
-          <label class="form-label">Mensagem</label>
-          <textarea name="message" rows="5" class="form-control" required></textarea>
+          <label class="form-label" for="f-mensagem">Mensagem</label>
+          <textarea id="f-mensagem" name="mensagem" rows="5" class="form-control" required></textarea>
         </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary" style="color:#111; font-weight:bold;">Enviar</button>
+        <div class="col-12 d-flex flex-wrap align-items-center gap-3">
+          <button type="submit" class="btn btn-orcamento">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i> Enviar pelo WhatsApp
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-sm" data-send="email">
+            <i class="fas fa-envelope me-1" aria-hidden="true"></i> Prefiro enviar por e-mail
+          </button>
         </div>
+        <p class="col-12 form-hint mb-0" role="status">
+          Ao enviar, abrimos a conversa já com a sua mensagem escrita — é só apertar enviar.
+        </p>
       </form>
     </div>
 
     <Localizacao />
   </section>
 </Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form.mega-form');
+  if (form) {
+    const hint = form.querySelector<HTMLElement>('.form-hint');
+    const val = (n: string) => (form.elements.namedItem(n) as HTMLInputElement | null)?.value.trim() ?? '';
+
+    const compose = () => {
+      const linhas = [
+        `Olá! Meu nome é ${val('nome')}.`,
+        '',
+        `Assunto: ${val('assunto')}`,
+        '',
+        val('mensagem'),
+      ];
+      const tel = val('telefone');
+      if (tel) linhas.push('', `Meu telefone: ${tel}`);
+      return linhas.join('\n');
+    };
+
+    const validar = () => {
+      let ok = true;
+      for (const nome of ['nome', 'assunto', 'mensagem']) {
+        const campo = form.elements.namedItem(nome) as HTMLInputElement | null;
+        if (!campo) continue;
+        const vazio = !campo.value.trim();
+        campo.classList.toggle('is-invalid', vazio);
+        if (vazio && ok) {
+          campo.focus();
+          ok = false;
+        }
+      }
+      if (!ok && hint) {
+        hint.textContent = 'Preencha nome, assunto e mensagem para continuar.';
+        hint.style.color = '#b3261e';
+      }
+      return ok;
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!validar()) return;
+      const numero = form.dataset.whatsapp;
+      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(compose())}`, '_blank', 'noopener');
+    });
+
+    form.querySelector('[data-send="email"]')?.addEventListener('click', () => {
+      if (!validar()) return;
+      const assunto = encodeURIComponent(`Site Mega Elite — ${val('assunto')}`);
+      window.location.href = `mailto:${form.dataset.email}?subject=${assunto}&body=${encodeURIComponent(compose())}`;
+    });
+
+    form.addEventListener('input', (e) => {
+      (e.target as HTMLElement).classList.remove('is-invalid');
+    });
+  }
+</script>

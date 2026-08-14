@@ -7,14 +7,17 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://localhost:4321',
+    baseURL: 'http://localhost:4322',
     trace: 'on-first-retry',
   },
+  // Porta própria (4322) e servidor dedicado: os testes rodam sempre contra o
+  // build estático, nunca contra o `astro dev` (que compila sob demanda e
+  // engasga com vários workers em paralelo).
   webServer: {
-    command: 'npm run preview',
-    url: 'http://localhost:4321',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    command: 'npm run build && npm run preview -- --port 4322',
+    url: 'http://localhost:4322',
+    reuseExistingServer: false,
+    timeout: 180_000,
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
 });

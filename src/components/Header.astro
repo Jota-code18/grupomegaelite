@@ -4,28 +4,20 @@ const path = Astro.url.pathname.replace(/\/index\.html$/, '/');
 ---
 <header class="site-header">
   <div class="container p-0">
-    <div class="d-flex align-items-center justify-content-center justify-content-md-between">
-      <div class="col-md-auto mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex" rel="home">
-          <img src="/img/logo.png" alt={site.name} class="img-fluid" />
-        </a>
-      </div>
-
-      <nav class="d-none d-md-block main-navigation col-md-auto justify-content-center">
-        <ul class="nav mb-2 mb-md-0" id="primary-menu">
+    <div class="header-bar d-flex align-items-center justify-content-center justify-content-md-between">
+      <nav class="d-none d-md-block main-navigation" aria-label="Menu principal">
+        <ul class="nav mb-0" id="primary-menu">
           {site.menu.map((m) => (
             <li class="nav-item">
-              <a class={`nav-link${m.href === path ? ' active' : ''}`} href={m.href}>{m.label}</a>
+              <a class={`nav-link${m.href === path ? ' active' : ''}`} href={m.href} aria-current={m.href === path ? 'page' : undefined}>{m.label}</a>
             </li>
           ))}
         </ul>
       </nav>
 
-      <div class="d-none d-md-block col-md-auto text-end">
-        <a href={site.cta.href} class="btn btn-primary" style="color:#111; font-weight: bold;">
-          <i class="fab fa-whatsapp me-1"></i> {site.cta.label}
-        </a>
-      </div>
+      <a href={site.cta.href} class="btn btn-orcamento">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i> {site.cta.label}
+      </a>
     </div>
   </div>
 </header>

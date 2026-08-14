@@ -1,9 +1,9 @@
 ---
 import site from '../data/site.json';
-import Topbar from '../components/Topbar.astro';
 import Header from '../components/Header.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import Footer from '../components/Footer.astro';
+import '../styles/ui.css';
 import '../styles/motion.css';
 
 interface Props {
@@ -65,7 +65,6 @@ const fullTitle = title ? `${title} – ${site.name}` : site.name;
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJC4HVCR" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <Topbar />
     <Header />
     <MobileMenu />
 

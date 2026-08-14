@@ -20,6 +20,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.2.0",
     "@astrojs/sitemap": "^3.3.0",
+    "@google/model-viewer": "^4.3.1",
     "astro": "^5.6.0"
   },
   "devDependencies": {
