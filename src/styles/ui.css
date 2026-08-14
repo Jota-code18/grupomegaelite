@@ -33,8 +33,11 @@ a {
   text-underline-offset: 3px;
 }
 
-/* ---- Header compacto, flutuante e arredondado -------------- */
+/* ---- Header compacto, flutuante, arredondado e fixo -------- */
 header.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
   background: transparent;
   padding: 14px 0 10px;
 }
@@ -42,12 +45,21 @@ header.site-header > .container {
   max-width: 1250px;
 }
 header.site-header .header-bar {
-  background: #fff;
-  border: 1px solid #e8e8ee;
+  /* Translúcido: o conteúdo passa por baixo sem sumir com o menu. */
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: var(--elite-radius);
-  box-shadow: 0 6px 20px -8px rgba(20, 20, 25, 0.28);
+  box-shadow: 0 8px 24px -10px rgba(20, 20, 25, 0.45);
   padding: 8px 10px 8px 20px;
   gap: 12px;
+}
+/* Sem suporte a backdrop-filter, o branco quase sólido garante leitura. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  header.site-header .header-bar {
+    background: rgba(255, 255, 255, 0.95);
+  }
 }
 header.site-header .main-navigation .nav {
   --bs-nav-link-padding-x: 14px;
@@ -160,6 +172,33 @@ header.site-header .nav-link.active::after {
   transform: translateY(0);
 }
 
+/* Variante escura: sobre o painel amarelo, o dourado sumia no fundo. */
+.btn.btn-orcamento--ink {
+  background: linear-gradient(180deg, #34343d 0%, var(--elite-ink) 100%);
+  color: #ffd84d;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 8px 20px -8px rgba(0, 0, 0, 0.7),
+    0 2px 4px -1px rgba(0, 0, 0, 0.35);
+}
+.btn.btn-orcamento--ink::after {
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 216, 77, 0.28) 50%,
+    transparent 65%
+  );
+}
+.btn.btn-orcamento--ink:hover,
+.btn.btn-orcamento--ink:focus-visible {
+  background: linear-gradient(180deg, #42424d 0%, #1d1d23 100%) !important;
+  color: #ffe27a !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.16) inset,
+    0 12px 26px -10px rgba(0, 0, 0, 0.8),
+    0 3px 6px -2px rgba(0, 0, 0, 0.4);
+}
+
 /* ---- Herói: palco 3D (preto) + painel (amarelo) ------------ */
 .hero-elite {
   display: grid;
@@ -170,9 +209,19 @@ header.site-header .nav-link.active::after {
 .hero-elite__stage {
   position: relative;
   min-height: 460px;
+  /* O preto atrás do escudo esquenta até encontrar o amarelo do painel,
+     dissolvendo a emenda entre as duas colunas. */
   background:
-    radial-gradient(120% 90% at 50% 45%, rgba(250, 201, 34, 0.18) 0%, transparent 62%),
-    linear-gradient(160deg, #202027 0%, var(--elite-ink) 55%, #0d0d10 100%);
+    radial-gradient(78% 72% at 38% 46%, rgba(250, 201, 34, 0.22) 0%, transparent 62%),
+    linear-gradient(
+      95deg,
+      #08080a 0%,
+      #141418 34%,
+      #2b2410 58%,
+      #6d5309 78%,
+      #c49a10 92%,
+      var(--elite-gold) 100%
+    );
   overflow: hidden;
 }
 .hero-elite__model {
@@ -296,6 +345,20 @@ header.site-header .nav-link.active::after {
   .hero-elite__stage,
   .hero-elite__model {
     min-height: 320px;
+  }
+  /* Empilhado: o degradê desce para encontrar o painel amarelo embaixo. */
+  .hero-elite__stage {
+    background:
+      radial-gradient(85% 60% at 50% 40%, rgba(250, 201, 34, 0.22) 0%, transparent 62%),
+      linear-gradient(
+        180deg,
+        #08080a 0%,
+        #141418 38%,
+        #2b2410 64%,
+        #6d5309 84%,
+        #c49a10 95%,
+        var(--elite-gold) 100%
+      );
   }
 }
 
