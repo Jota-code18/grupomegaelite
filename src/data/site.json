@@ -11,7 +11,10 @@
     { "label": "Home", "href": "/" },
     { "label": "Empresa", "href": "/empresa/" },
     { "label": "Portaria Remota", "href": "/servicos/portaria.html" },
-    { "label": "Vigilância Armada", "href": "/servicos/seguranca-privada-vigilancia-armada-e-desarmada.html" },
+    {
+      "label": "Vigilância Armada",
+      "href": "/servicos/seguranca-privada-vigilancia-armada-e-desarmada.html"
+    },
     { "label": "Serviços", "href": "/servicos/" },
     { "label": "Contato", "href": "/contato/" }
   ],
@@ -32,8 +35,20 @@
   "empresa_youtube": "pAjrsi8k6IE",
   "maps_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3829.1543693067206!2d-48.9470679!3d-16.3150548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935ea578c026eb51%3A0xe323bab49c2d2afb!2sMega%20Elite%20Seguran%C3%A7a!5e0!3m2!1spt-BR!2sbr!4v1756929389545!5m2!1spt-BR!2sbr",
   "slideshow": [
-    { "img": "/wp-content/uploads/2025/08/banner-escolta-armada.png", "link": "/telefones/", "alt": "Banner 001" },
-    { "img": "/wp-content/uploads/2025/08/banner-monitoramento-1.png", "link": "/telefones/", "alt": "Banner 02" },
-    { "img": "/wp-content/uploads/2025/08/banner-seguranca-privada-2.png", "link": "/telefones/", "alt": "Banner 03" }
+    {
+      "img": "/wp-content/uploads/2025/08/banner-escolta-armada.png",
+      "link": "/telefones/",
+      "alt": "Banner 001"
+    },
+    {
+      "img": "/wp-content/uploads/2025/08/banner-monitoramento-1.png",
+      "link": "/telefones/",
+      "alt": "Banner 02"
+    },
+    {
+      "img": "/wp-content/uploads/2025/08/banner-seguranca-privada-2.png",
+      "link": "/telefones/",
+      "alt": "Banner 03"
+    }
   ]
 }

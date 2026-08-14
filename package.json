@@ -7,11 +7,29 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "knip": "knip",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "prepare": "husky"
   },
   "dependencies": {
-    "astro": "^5.6.0",
     "@astrojs/mdx": "^4.2.0",
-    "@astrojs/sitemap": "^3.3.0"
+    "@astrojs/sitemap": "^3.3.0",
+    "astro": "^5.6.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.8",
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
+    "@playwright/test": "^1.62.1",
+    "@vitest/coverage-v8": "^4.1.10",
+    "husky": "^9.1.7",
+    "knip": "^6.32.2",
+    "vitest": "^4.1.10"
   }
 }

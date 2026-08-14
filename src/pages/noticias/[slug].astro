@@ -6,6 +6,7 @@ import ShareButtons from '../../components/ShareButtons.astro';
 import PostNav from '../../components/PostNav.astro';
 import ConteudosSugeridos from '../../components/ConteudosSugeridos.astro';
 import { getCollection } from 'astro:content';
+import { readingTime } from '../../lib/text';
 
 export async function getStaticPaths() {
   const items = (await getCollection('noticias')).sort(
@@ -22,8 +23,7 @@ export async function getStaticPaths() {
 }
 const { entry, prev, next } = Astro.props;
 const sugeridos = (await getCollection('noticias')).filter((n) => n.data.slug !== entry.data.slug).slice(0, 3);
-const words = entry.data.html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
-const readingTime = Math.max(1, Math.ceil(words / 200));
+const minutosLeitura = readingTime(entry.data.html);
 const permalink = `https://grupomegaelite.com.br/noticias/${entry.data.slug}.html`;
 ---
 <Base title={entry.data.title}>
@@ -41,7 +41,7 @@ const permalink = `https://grupomegaelite.com.br/noticias/${entry.data.slug}.htm
                   <a href="/noticias/" class="badge bg-primary bg-opacity-10 text-primary text-decoration-none me-1">Notícias</a>
                 </span>
                 <span class="post-reading-time d-flex align-items-center">
-                  <i class="fas fa-clock me-2 text-primary"></i>{readingTime} min de leitura
+                  <i class="fas fa-clock me-2 text-primary"></i>{minutosLeitura} min de leitura
                 </span>
               </div>
             </header>

@@ -3,17 +3,8 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import { getCollection } from 'astro:content';
+import { dateBR, excerpt } from '../../lib/text';
 
-function excerpt(html: string, words = 25) {
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  const parts = text.split(' ');
-  return parts.slice(0, words).join(' ') + (parts.length > words ? '…' : '');
-}
-function dateBR(d?: string) {
-  if (!d) return '';
-  const [y, m, day] = d.slice(0, 10).split('-');
-  return `${day}.${m}.${y}`;
-}
 const noticias = (await getCollection('noticias')).sort(
   (a, b) => (b.data.date || '').localeCompare(a.data.date || '')
 );

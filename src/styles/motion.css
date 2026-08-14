@@ -15,18 +15,34 @@
 }
 
 /* ---- Revelação ao rolar (entrada) ------------------------- */
-.js-motion :is(
-    .title-main-section, .my-card-site, .card-noticias-home, article.card,
-    .galeria-carrossel-wrapper, .empresa .row, .accordion, .post-navigation,
-    .social-share, .conteudos-sugeridos
-  ) {
+.js-motion
+:is(
+  .title-main-section,
+  .my-card-site,
+  .card-noticias-home,
+  article.card,
+  .galeria-carrossel-wrapper,
+  .empresa .row,
+  .accordion,
+  .post-navigation,
+  .social-share,
+  .conteudos-sugeridos
+) {
   opacity: 0;
   transform: translateY(18px);
 }
-.js-motion :is(
-    .title-main-section, .my-card-site, .card-noticias-home, article.card,
-    .galeria-carrossel-wrapper, .empresa .row, .accordion, .post-navigation,
-    .social-share, .conteudos-sugeridos
+.js-motion
+  :is(
+    .title-main-section,
+    .my-card-site,
+    .card-noticias-home,
+    article.card,
+    .galeria-carrossel-wrapper,
+    .empresa .row,
+    .accordion,
+    .post-navigation,
+    .social-share,
+    .conteudos-sugeridos
   ).is-revealed {
   opacity: 1;
   transform: none;
@@ -93,14 +109,18 @@
 .route-progress.is-done {
   transform: scaleX(1) !important;
   opacity: 0;
-  transition: transform 0.2s ease, opacity 0.3s ease 0.12s;
+  transition:
+    transform 0.2s ease,
+    opacity 0.3s ease 0.12s;
 }
 
 /* ---- Micro-interações (feedback) -------------------------- */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .my-card-site,
   .card-noticias-home {
-    transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.25s ease;
+    transition:
+      transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+      box-shadow 0.25s ease;
   }
   .my-card-site:hover,
   .card-noticias-home:hover {
@@ -109,7 +129,11 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .btn {
-    transition: transform 0.14s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition:
+      transform 0.14s ease,
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
   }
   .btn:active {
     transform: scale(0.97);

@@ -1,0 +1,10 @@
+# Cobertura informativa — não bloqueia o CI enquanto a suíte cresce.
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true
+comment: false

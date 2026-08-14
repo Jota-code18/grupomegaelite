@@ -17,3 +17,8 @@ pnpm-debug.log*
 Thumbs.db
 # material de referência do WordPress antigo (não vai para produção)
 _referencia-wordpress/
+# testes e cobertura
+coverage/
+test-results/
+playwright-report/
+.playwright-mcp/

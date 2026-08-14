@@ -1,12 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { excerpt } from '../lib/text';
 interface Props { items: CollectionEntry<'noticias'>[]; }
 const { items } = Astro.props;
-function excerpt(html: string, words = 15) {
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  const parts = text.split(' ');
-  return parts.slice(0, words).join(' ') + (parts.length > words ? '…' : '');
-}
 ---
 {items.length > 0 && (
   <div class="container" style="margin-bottom:60px;">
@@ -24,7 +20,7 @@ function excerpt(html: string, words = 15) {
               )}
               <div class="card-body">
                 <h5 class="card-title">{n.data.title}</h5>
-                <p class="card-text">{excerpt(n.data.html)}</p>
+                <p class="card-text">{excerpt(n.data.html, 15)}</p>
                 <a href={`/noticias/${n.data.slug}.html`} class="btn btn-sm btn-warning text-dark fw-semibold">Ler mais</a>
               </div>
             </div>

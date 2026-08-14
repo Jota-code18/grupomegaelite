@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Lint + formatação (Biome)
+        run: npx biome ci .
+
+      - name: Código morto / dependências não usadas (Knip)
+        run: npm run knip
+
+      - name: Testes unitários + cobertura
+        run: npm run test:unit -- --coverage
+
+      - name: Enviar cobertura (Codecov)
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Instalar navegador do Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Testes end-to-end (Playwright)
+        run: npm run test:e2e
