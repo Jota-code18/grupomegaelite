@@ -4,8 +4,22 @@ const path = Astro.url.pathname.replace(/\/index\.html$/, '/');
 ---
 <header class="site-header">
   <div class="container p-0">
-    <div class="header-bar d-flex align-items-center justify-content-center justify-content-md-between">
-      <nav class="d-none d-md-block main-navigation" aria-label="Menu principal">
+    <div class="header-bar d-flex align-items-center justify-content-between">
+      <!-- Mobile: abre o menu. Desktop: escondido (o menu já está visível). -->
+      <button
+        class="header-toggle d-lg-none"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#menu-mobile"
+        aria-controls="menu-mobile"
+        aria-expanded="false"
+        aria-label="Abrir menu"
+      >
+        <span class="header-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        Menu
+      </button>
+
+      <nav class="d-none d-lg-block main-navigation" aria-label="Menu principal">
         <ul class="nav mb-0" id="primary-menu">
           {site.menu.map((m) => (
             <li class="nav-item">
@@ -16,8 +30,18 @@ const path = Astro.url.pathname.replace(/\/index\.html$/, '/');
       </nav>
 
       <a href={site.cta.href} class="btn btn-orcamento">
-        <i class="fab fa-whatsapp" aria-hidden="true"></i> {site.cta.label}
+        <i class="fab fa-whatsapp" aria-hidden="true"></i> <span>{site.cta.label}</span>
       </a>
+    </div>
+
+    <div class="collapse d-lg-none" id="menu-mobile">
+      <nav class="header-drawer" aria-label="Menu">
+        <ul>
+          {site.menu.map((m) => (
+            <li><a href={m.href} class={m.href === path ? 'is-active' : undefined}>{m.label}</a></li>
+          ))}
+        </ul>
+      </nav>
     </div>
   </div>
 </header>

@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Hero3D from '../components/home/Hero3D.astro';
+import Hero from '../components/home/Hero.astro';
 import Slideshow from '../components/home/Slideshow.astro';
 import Servicos from '../components/home/Servicos.astro';
 import Empresa from '../components/home/Empresa.astro';
@@ -15,8 +15,8 @@ const servicos = (await getCollection('servicos')).sort(
 const noticias = await getCollection('noticias');
 const faqs = await getCollection('faq');
 ---
-<Base>
-  <Hero3D />
+<Base bodyClass="home">
+  <Hero />
   <Slideshow />
   <Servicos items={servicos.slice(0, 4)} />
   <Empresa />

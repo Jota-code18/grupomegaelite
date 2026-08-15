@@ -1,7 +1,6 @@
 ---
 import site from '../data/site.json';
 import Header from '../components/Header.astro';
-import MobileMenu from '../components/MobileMenu.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/ui.css';
 import '../styles/motion.css';
@@ -66,7 +65,6 @@ const fullTitle = title ? `${title} – ${site.name}` : site.name;
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJC4HVCR" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <Header />
-    <MobileMenu />
 
     <main>
       <slot />
@@ -77,6 +75,27 @@ const fullTitle = title ? `${title} – ${site.name}` : site.name;
     <script is:inline src="/js/jquery.min.js"></script>
     <script is:inline src="/js/bootstrap.bundle.min.js"></script>
     <script is:inline src="/js/js.js"></script>
+
+    <!-- Header: mede a altura (páginas internas usam de respiro) e troca
+         para o fundo claro assim que a página sai do topo. -->
+    <script is:inline>
+      (function () {
+        var cab = document.querySelector('header.site-header');
+        if (!cab) return;
+        var medir = function () {
+          document.documentElement.style.setProperty('--header-h', cab.offsetHeight + 'px');
+        };
+        medir();
+        window.addEventListener('resize', medir, { passive: true });
+        if (window.ResizeObserver) new ResizeObserver(medir).observe(cab);
+
+        var marcar = function () {
+          cab.classList.toggle('is-scrolled', window.scrollY > 24);
+        };
+        marcar();
+        window.addEventListener('scroll', marcar, { passive: true });
+      })();
+    </script>
 
     <!-- Motion: revelação ao rolar, lazy/fade/skeleton de imagens, barra de progresso -->
     <script is:inline>

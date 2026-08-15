@@ -2,6 +2,7 @@
 import site from '../../data/site.json';
 const slides = site.slideshow;
 ---
+<div class="slideshow-wrap">
 <div id="carouselSlides" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     {slides.map((_, i) => (
@@ -33,4 +34,5 @@ const slides = site.slideshow;
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Próximo</span>
   </button>
+</div>
 </div>

@@ -50,19 +50,45 @@ test('formulário exige os campos obrigatórios', async ({ page }) => {
   await expect(page.locator('input[name="nome"]')).toHaveClass(/is-invalid/);
 });
 
-test('home mostra o herói 3D acima do carrossel', async ({ page }) => {
+test('home mostra o herói com o vídeo do escudo acima do carrossel', async ({ page }) => {
   await page.goto('/');
   const hero = page.locator('.hero-elite');
   await expect(hero).toBeVisible();
   await expect(hero.locator('h1')).toContainText('confiança');
-  await expect(page.locator('model-viewer')).toHaveAttribute('src', '/models/elite-3d.glb');
+  const video = hero.locator('video.hero-elite__video');
+  await expect(video).toHaveAttribute('loop', '');
+  await expect(video.locator('source')).toHaveAttribute('src', '/videos/escudo.mp4');
+  // O 3D ao vivo saiu de cena: nada de model-viewer nem GLB no site publicado.
+  await expect(page.locator('model-viewer')).toHaveCount(0);
 });
 
-test('header não tem topbar nem logo', async ({ page }) => {
+test('header não tem topbar nem logo e fica sobre o herói', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.topbar')).toHaveCount(0);
   await expect(page.locator('header.site-header img')).toHaveCount(0);
   await expect(page.locator('header.site-header .btn-orcamento')).toBeVisible();
+  // Fixo e sem reservar espaço: o herói começa no topo, por baixo do header.
+  await expect(page.locator('header.site-header')).toHaveCSS('position', 'fixed');
+  const heroTop = await page
+    .locator('.hero-elite')
+    .evaluate((el) => el.getBoundingClientRect().top);
+  expect(heroTop).toBeLessThanOrEqual(1);
+});
+
+test('menu mobile abre pelo botão do header', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const gaveta = page.locator('#menu-mobile');
+  await expect(gaveta).toBeHidden();
+  await page.click('.header-toggle');
+  await expect(gaveta).toBeVisible();
+  await expect(gaveta.locator('a')).toHaveCount(6);
+});
+
+test('páginas internas não ficam escondidas atrás do header fixo', async ({ page }) => {
+  await page.goto('/servicos/');
+  const topo = await page.locator('main h1').evaluate((el) => el.getBoundingClientRect().top);
+  expect(topo).toBeGreaterThan(60);
 });
 
 test('404 renderiza a página de erro', async ({ page }) => {

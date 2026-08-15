@@ -17,6 +17,8 @@ pnpm-debug.log*
 Thumbs.db
 # material de referência do WordPress antigo (não vai para produção)
 _referencia-wordpress/
+# quadros temporários do render do vídeo
+.frames/
 # testes e cobertura
 coverage/
 test-results/

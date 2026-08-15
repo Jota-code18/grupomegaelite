@@ -33,10 +33,10 @@ a {
   text-underline-offset: 3px;
 }
 
-/* ---- Header compacto, flutuante, arredondado e fixo -------- */
+/* ---- Header flutuante, por cima do conteúdo ---------------- */
 header.site-header {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  inset: 0 0 auto 0;
   z-index: 1030;
   background: transparent;
   padding: 14px 0 10px;
@@ -44,44 +44,77 @@ header.site-header {
 header.site-header > .container {
   max-width: 1250px;
 }
-header.site-header .header-bar {
-  /* Translúcido: o conteúdo passa por baixo sem sumir com o menu. */
-  background: rgba(255, 255, 255, 0.72);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  backdrop-filter: blur(14px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  border-radius: var(--elite-radius);
-  box-shadow: 0 8px 24px -10px rgba(20, 20, 25, 0.45);
-  padding: 8px 10px 8px 20px;
-  gap: 12px;
+/* O header não ocupa espaço: as páginas internas compensam com um respiro,
+   a home deixa o herói subir e passar por baixo dele. */
+body:not(.home) main {
+  padding-top: var(--header-h, 78px);
 }
-/* Sem suporte a backdrop-filter, o branco quase sólido garante leitura. */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  header.site-header .header-bar {
-    background: rgba(255, 255, 255, 0.95);
-  }
+/* --- Forma primeiro (seletores mais genéricos), estado depois --- */
+.header-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.7rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.header-toggle__bars {
+  display: grid;
+  gap: 4px;
+  width: 18px;
+}
+.header-toggle__bars span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.header-drawer {
+  margin-top: 8px;
+  border-radius: var(--elite-radius);
+  background: rgba(18, 18, 22, 0.96);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 36px -18px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+.header-drawer ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+}
+.header-drawer a {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.header-drawer a:hover,
+.header-drawer a:focus-visible,
+.header-drawer a.is-active {
+  background: rgba(250, 201, 34, 0.16);
+  color: var(--elite-gold);
 }
 header.site-header .main-navigation .nav {
   --bs-nav-link-padding-x: 14px;
   --bs-nav-link-padding-y: 8px;
   flex-wrap: nowrap;
 }
+/* Só a forma; a cor vem do estado do header, logo abaixo. */
 header.site-header .nav-link {
-  color: var(--elite-ink);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
   border-radius: 10px;
   white-space: nowrap;
-}
-header.site-header .nav-link:hover,
-header.site-header .nav-link:focus-visible {
-  background: #f4f4f7;
-  color: var(--elite-ink) !important;
-}
-header.site-header .nav-link.active {
-  color: var(--elite-ink) !important;
-  background: #f4f4f7;
 }
 header.site-header .nav-link.active::after {
   content: "";
@@ -91,6 +124,56 @@ header.site-header .nav-link.active::after {
   margin: 3px auto -1px;
   border-radius: 2px;
   background: var(--elite-gold);
+}
+
+/* --- Estado: vidro escuro sobre o herói, claro depois de rolar --- */
+header.site-header .header-bar {
+  background: rgba(18, 18, 22, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--elite-radius);
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+  padding: 8px 10px 8px 20px;
+  gap: 12px;
+  transition:
+    background-color 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+header.site-header .header-bar .nav-link,
+header.site-header .header-bar .header-toggle {
+  color: rgba(255, 255, 255, 0.92);
+}
+header.site-header .header-bar .nav-link:hover,
+header.site-header .header-bar .nav-link:focus-visible,
+header.site-header .header-bar .nav-link.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+header.site-header.is-scrolled .header-bar {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 24px -10px rgba(20, 20, 25, 0.45);
+}
+header.site-header.is-scrolled .header-bar .nav-link,
+header.site-header.is-scrolled .header-bar .header-toggle {
+  color: var(--elite-ink);
+}
+header.site-header.is-scrolled .header-bar .nav-link:hover,
+header.site-header.is-scrolled .header-bar .nav-link:focus-visible,
+header.site-header.is-scrolled .header-bar .nav-link.active {
+  background: #f0f0f4;
+  color: var(--elite-ink);
+}
+/* Sem backdrop-filter o vidro não existe: usa fundo sólido para não perder leitura. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  header.site-header .header-bar {
+    background: rgba(18, 18, 22, 0.92);
+  }
+  header.site-header.is-scrolled .header-bar {
+    background: rgba(255, 255, 255, 0.97);
+  }
 }
 
 /* ---- Botão "Faça seu orçamento" --------------------------- */
@@ -200,31 +283,43 @@ header.site-header .nav-link.active::after {
 }
 
 /* ---- Herói: palco 3D (preto) + painel (amarelo) ------------ */
+/* O degradê vive no herói inteiro, não em cada metade: assim não existe
+   emenda entre as colunas (era ela que desenhava a listra amarela). */
 .hero-elite {
+  position: relative;
   display: grid;
   grid-template-columns: 1.05fr 1fr;
   align-items: stretch;
-  background: var(--elite-ink);
+  background: linear-gradient(
+    95deg,
+    #08080a 0%,
+    #121216 22%,
+    #241e0e 36%,
+    #6d5309 45%,
+    #c49a10 50%,
+    var(--elite-gold) 54%,
+    var(--elite-gold) 100%
+  );
 }
 .hero-elite__stage {
   position: relative;
   min-height: 460px;
-  /* O preto atrás do escudo esquenta até encontrar o amarelo do painel,
-     dissolvendo a emenda entre as duas colunas. */
-  background:
-    radial-gradient(78% 72% at 38% 46%, rgba(250, 201, 34, 0.22) 0%, transparent 62%),
-    linear-gradient(
-      95deg,
-      #08080a 0%,
-      #141418 34%,
-      #2b2410 58%,
-      #6d5309 78%,
-      #c49a10 92%,
-      var(--elite-gold) 100%
-    );
   overflow: hidden;
 }
+/* O vídeo cobre o palco e some numa máscara antes do amarelo, para o degradê
+   do herói continuar aparecendo por baixo. O brilho quente já vem gravado. */
+.hero-elite__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(95deg, #000 0%, #000 60%, transparent 92%);
+  mask-image: linear-gradient(95deg, #000 0%, #000 60%, transparent 92%);
+}
 .hero-elite__model {
+  position: relative;
   width: 100%;
   height: 100%;
   min-height: 460px;
@@ -233,9 +328,11 @@ header.site-header .nav-link.active::after {
   --progress-mask: transparent;
 }
 .hero-elite__panel {
-  background: var(--elite-gold);
+  position: relative;
   color: var(--elite-ink);
-  padding: clamp(2.25rem, 3.6vw, 3.5rem) clamp(1.5rem, 3.4vw, 3.25rem);
+  /* O header flutua por cima do herói: o texto começa abaixo dele. */
+  padding: calc(var(--header-h, 78px) + clamp(1.25rem, 2.2vw, 2rem)) clamp(1.5rem, 3.4vw, 3.25rem)
+    clamp(2.25rem, 3.6vw, 3.5rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -339,26 +436,164 @@ header.site-header .nav-link.active::after {
 }
 
 @media (max-width: 991.98px) {
+  /* Empilhado, a altura do painel é variável, então o degradê volta para o
+     palco (termina no amarelo exato) e o painel fica dourado sólido. */
   .hero-elite {
     grid-template-columns: 1fr;
+    background: none;
   }
-  .hero-elite__stage,
-  .hero-elite__model {
-    min-height: 320px;
-  }
-  /* Empilhado: o degradê desce para encontrar o painel amarelo embaixo. */
   .hero-elite__stage {
-    background:
-      radial-gradient(85% 60% at 50% 40%, rgba(250, 201, 34, 0.22) 0%, transparent 62%),
-      linear-gradient(
-        180deg,
-        #08080a 0%,
-        #141418 38%,
-        #2b2410 64%,
-        #6d5309 84%,
-        #c49a10 95%,
-        var(--elite-gold) 100%
-      );
+    background: linear-gradient(
+      180deg,
+      #08080a 0%,
+      #121216 30%,
+      #241e0e 55%,
+      #6d5309 74%,
+      #c49a10 90%,
+      var(--elite-gold) 100%
+    );
+  }
+  .hero-elite__panel {
+    background: var(--elite-gold);
+  }
+  /* Empilhado o palco fica logo abaixo do header: o escudo desce para não
+     ficar escondido atrás dele. */
+  .hero-elite__video {
+    top: var(--header-h, 78px);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 97%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 97%);
+  }
+  .hero-elite__stage {
+    min-height: calc(320px + var(--header-h, 78px));
+  }
+  .hero-elite__panel {
+    padding-top: clamp(2rem, 5vw, 2.75rem);
+  }
+}
+
+/* ---- Carrossel de banners --------------------------------- */
+.slideshow-wrap {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 26px 16px 6px;
+}
+#carouselSlides {
+  border-radius: 22px;
+  overflow: hidden;
+  border-bottom: 0;
+  box-shadow: 0 18px 40px -22px rgba(20, 20, 25, 0.55);
+}
+#carouselSlides .carousel-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Setas com a mesma linguagem dos CTAs: pílula dourada, sombra, leve subida. */
+#carouselSlides .carousel-control-prev,
+#carouselSlides .carousel-control-next {
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 999px;
+  opacity: 1;
+  color: var(--elite-ink);
+  background: linear-gradient(
+    180deg,
+    #ffd84d 0%,
+    var(--elite-gold) 55%,
+    var(--elite-gold-deep) 100%
+  );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 8px 18px -8px rgba(0, 0, 0, 0.65);
+}
+#carouselSlides .carousel-control-prev {
+  left: 18px;
+}
+#carouselSlides .carousel-control-next {
+  right: 18px;
+}
+#carouselSlides .carousel-control-prev-icon,
+#carouselSlides .carousel-control-next-icon {
+  width: auto;
+  height: auto;
+  background-image: none;
+  font-family: "Font Awesome 6 Free", sans-serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+#carouselSlides .carousel-control-prev-icon::before {
+  content: "\f053";
+}
+#carouselSlides .carousel-control-next-icon::before {
+  content: "\f054";
+}
+@media (prefers-reduced-motion: no-preference) {
+  #carouselSlides .carousel-control-prev,
+  #carouselSlides .carousel-control-next {
+    transition:
+      background-color 0.2s ease,
+      box-shadow 0.2s ease,
+      scale 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+}
+#carouselSlides .carousel-control-prev:hover,
+#carouselSlides .carousel-control-next:hover,
+#carouselSlides .carousel-control-prev:focus-visible,
+#carouselSlides .carousel-control-next:focus-visible {
+  color: var(--elite-ink);
+  scale: 1.07;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 12px 24px -10px rgba(0, 0, 0, 0.75);
+}
+
+/* Indicadores: o ativo vira uma pílula dourada. */
+#carouselSlides .carousel-indicators {
+  margin-bottom: 14px;
+}
+#carouselSlides .carousel-indicators [data-bs-target] {
+  width: 9px;
+  height: 9px;
+  margin: 0 5px;
+  border: 0;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.55);
+  opacity: 1;
+}
+#carouselSlides .carousel-indicators .active {
+  width: 26px;
+  background-color: var(--elite-gold);
+}
+@media (prefers-reduced-motion: no-preference) {
+  #carouselSlides .carousel-indicators [data-bs-target] {
+    transition:
+      width 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+      background-color 0.28s ease;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .slideshow-wrap {
+    padding: 16px 10px 4px;
+  }
+  #carouselSlides {
+    border-radius: 16px;
+  }
+  #carouselSlides .carousel-control-prev,
+  #carouselSlides .carousel-control-next {
+    width: 40px;
+    height: 40px;
+  }
+  #carouselSlides .carousel-control-prev {
+    left: 10px;
+  }
+  #carouselSlides .carousel-control-next {
+    right: 10px;
   }
 }
 

@@ -1,0 +1,55 @@
+---
+import site from '../../data/site.json';
+---
+<section class="hero-elite" aria-label="Grupo Mega Elite">
+  <div class="hero-elite__stage">
+    <!-- Vídeo em loop no lugar do 3D ao vivo: mesmo movimento, ~2 MB em vez de
+         16 MB de modelo + runtime WebGL, e sem custo de GPU no celular. -->
+    <video
+      class="hero-elite__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="/videos/escudo-poster.jpg"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <source src="/videos/escudo.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <div class="hero-elite__panel">
+    <h1>Proteção que inspira confiança.</h1>
+    <p class="hero-elite__lead">
+      Há 30 anos protegendo pessoas, empresas e condomínios em Anápolis e região —
+      com central de monitoramento própria, equipes treinadas e tecnologia de ponta.
+    </p>
+
+    <ul class="hero-elite__facts">
+      <li><i class="fas fa-tower-broadcast" aria-hidden="true"></i> Central de monitoramento 24 horas</li>
+      <li><i class="fas fa-shield-halved" aria-hidden="true"></i> Vigilância armada e desarmada</li>
+      <li><i class="fas fa-building-shield" aria-hidden="true"></i> Portaria presencial e remota</li>
+      <li><i class="fas fa-truck-fast" aria-hidden="true"></i> Escolta armada e limpeza profissional</li>
+    </ul>
+
+    <div class="hero-elite__cta">
+      <a href={site.cta.href} class="btn btn-orcamento btn-orcamento--ink">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i> {site.cta.label}
+      </a>
+      <a href={`tel:+55${site.topbar.phone.replace(/\D/g, '')}`} class="hero-elite__phone">
+        <i class="fas fa-phone" aria-hidden="true"></i> {site.topbar.phone}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Quem pediu menos movimento fica com o quadro parado (o poster).
+  const video = document.querySelector<HTMLVideoElement>('.hero-elite__video');
+  if (video && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    video.removeAttribute('autoplay');
+    video.pause();
+  }
+</script>
