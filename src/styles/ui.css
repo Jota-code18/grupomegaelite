@@ -438,9 +438,12 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
 @media (max-width: 991.98px) {
   /* Empilhado, a altura do painel é variável, então o degradê volta para o
      palco (termina no amarelo exato) e o painel fica dourado sólido. */
+  /* O herói inteiro é dourado por baixo e só o palco desenha o escurecimento
+     por cima. Assim as duas metades não encostam dourado-com-dourado, que é o
+     que produzia a linha fina na divisão. */
   .hero-elite {
     grid-template-columns: 1fr;
-    background: none;
+    background: var(--elite-gold);
   }
   .hero-elite__stage {
     background: linear-gradient(
@@ -454,14 +457,19 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
     );
   }
   .hero-elite__panel {
-    background: var(--elite-gold);
+    background: transparent;
   }
-  /* Empilhado o palco fica logo abaixo do header: o escudo desce para não
-     ficar escondido atrás dele. */
+  /* O vídeo começa abaixo do header e termina no fim do palco — usar `inset`
+     com `height:auto` (e não só `top`), senão ele vaza para fora do palco,
+     leva corte no `overflow:hidden` e a máscara que dissolve no amarelo é
+     decepada junto (era isso que deixava a divisão dura e o escudo tampado). */
   .hero-elite__video {
     top: var(--header-h, 78px);
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 97%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 97%);
+    /* Altura explícita: com `height:auto` o vídeo assumiria a proporção do
+       arquivo e não preencheria o palco. */
+    height: calc(100% - var(--header-h, 78px));
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 99%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 99%);
   }
   .hero-elite__stage {
     min-height: calc(320px + var(--header-h, 78px));
@@ -469,6 +477,20 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
   .hero-elite__panel {
     padding-top: clamp(2rem, 5vw, 2.75rem);
   }
+}
+
+/* ---- Cards de serviço da home ------------------------------ */
+/* As artes são 1000x1300 (retrato), então o card acompanhava a altura da
+   imagem e ficava enorme. Limitar a largura encolhe tudo junto, sem cortar
+   a arte. */
+.my-card-site {
+  max-width: 260px;
+  margin-inline: auto;
+}
+.my-card-site h5 {
+  font-size: 16px;
+  padding: 14px 12px;
+  line-height: 1.25;
 }
 
 /* ---- Carrossel de banners --------------------------------- */
@@ -493,8 +515,8 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
 #carouselSlides .carousel-control-prev,
 #carouselSlides .carousel-control-next {
   top: 50%;
-  width: 50px;
-  height: 50px;
+  width: 38px;
+  height: 38px;
   transform: translateY(-50%);
   border: 0;
   border-radius: 999px;
@@ -511,10 +533,10 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
     0 8px 18px -8px rgba(0, 0, 0, 0.65);
 }
 #carouselSlides .carousel-control-prev {
-  left: 18px;
+  left: 12px;
 }
 #carouselSlides .carousel-control-next {
-  right: 18px;
+  right: 12px;
 }
 #carouselSlides .carousel-control-prev-icon,
 #carouselSlides .carousel-control-next-icon {
@@ -523,7 +545,7 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
   background-image: none;
   font-family: "Font Awesome 6 Free", sans-serif;
   font-weight: 900;
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   line-height: 1;
 }
 #carouselSlides .carousel-control-prev-icon::before {
@@ -586,14 +608,18 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
   }
   #carouselSlides .carousel-control-prev,
   #carouselSlides .carousel-control-next {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
   #carouselSlides .carousel-control-prev {
-    left: 10px;
+    left: 7px;
   }
   #carouselSlides .carousel-control-next {
-    right: 10px;
+    right: 7px;
+  }
+  #carouselSlides .carousel-control-prev-icon,
+  #carouselSlides .carousel-control-next-icon {
+    font-size: 0.72rem;
   }
 }
 
