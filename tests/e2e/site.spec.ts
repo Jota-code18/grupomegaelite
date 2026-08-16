@@ -1,7 +1,15 @@
+import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
+/**
+ * A home tem um vídeo de alguns MB no herói. Esperar o evento `load` faria cada
+ * teste aguardar o vídeo inteiro baixar — o que nenhum deles verifica. O DOM
+ * pronto é o sinal certo aqui.
+ */
+const abrirHome = (page: Page) => page.goto('/', { waitUntil: 'domcontentloaded' });
+
 test('home carrega com título e menu', async ({ page }) => {
-  await page.goto('/');
+  await abrirHome(page);
   await expect(page).toHaveTitle(/Mega Elite/);
   await expect(page.locator('#primary-menu').first()).toContainText('Serviços');
 });
@@ -51,7 +59,7 @@ test('formulário exige os campos obrigatórios', async ({ page }) => {
 });
 
 test('home mostra o herói com o vídeo do escudo acima do carrossel', async ({ page }) => {
-  await page.goto('/');
+  await abrirHome(page);
   const hero = page.locator('.hero-elite');
   await expect(hero).toBeVisible();
   await expect(hero.locator('h1')).toContainText('confiança');
@@ -63,7 +71,7 @@ test('home mostra o herói com o vídeo do escudo acima do carrossel', async ({ 
 });
 
 test('header não tem topbar nem logo e fica sobre o herói', async ({ page }) => {
-  await page.goto('/');
+  await abrirHome(page);
   await expect(page.locator('.topbar')).toHaveCount(0);
   await expect(page.locator('header.site-header img')).toHaveCount(0);
   await expect(page.locator('header.site-header .btn-orcamento')).toBeVisible();
@@ -77,7 +85,7 @@ test('header não tem topbar nem logo e fica sobre o herói', async ({ page }) =
 
 test('menu mobile abre pelo botão do header', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await abrirHome(page);
   const gaveta = page.locator('#menu-mobile');
   await expect(gaveta).toBeHidden();
   await page.click('.header-toggle');

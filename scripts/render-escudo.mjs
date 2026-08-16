@@ -29,8 +29,8 @@ import { join } from 'node:path';
 import { chromium } from '@playwright/test';
 
 const URL_RENDER = process.env.RENDER_URL ?? 'http://localhost:4321/render-escudo';
-const LARGURA = 1200;
-const ALTURA = 900;
+const LARGURA = 1400;
+const ALTURA = 1050;
 const DURACAO = 18; // segundos do loop
 const FPS = 20;
 const TOTAL = DURACAO * FPS;
@@ -86,7 +86,7 @@ ff([
   '-profile:v',
   'high',
   '-crf',
-  '26',
+  '24',
   '-preset',
   'slow',
   '-pix_fmt',
