@@ -126,14 +126,14 @@ header.site-header .nav-link.active::after {
   background: var(--elite-gold);
 }
 
-/* --- Estado: vidro escuro sobre o herói, claro depois de rolar --- */
+/* --- Estado padrão: vidro claro (todo o site tem fundo claro) --- */
 header.site-header .header-bar {
-  background: rgba(18, 18, 22, 0.55);
+  background: rgba(255, 255, 255, 0.82);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
   backdrop-filter: blur(14px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: var(--elite-radius);
-  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 8px 24px -10px rgba(20, 20, 25, 0.45);
   padding: 8px 10px 8px 20px;
   gap: 12px;
   transition:
@@ -143,36 +143,38 @@ header.site-header .header-bar {
 }
 header.site-header .header-bar .nav-link,
 header.site-header .header-bar .header-toggle {
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--elite-ink);
 }
 header.site-header .header-bar .nav-link:hover,
 header.site-header .header-bar .nav-link:focus-visible,
 header.site-header .header-bar .nav-link.active {
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
-}
-header.site-header.is-scrolled .header-bar {
-  background: rgba(255, 255, 255, 0.82);
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 24px -10px rgba(20, 20, 25, 0.45);
-}
-header.site-header.is-scrolled .header-bar .nav-link,
-header.site-header.is-scrolled .header-bar .header-toggle {
-  color: var(--elite-ink);
-}
-header.site-header.is-scrolled .header-bar .nav-link:hover,
-header.site-header.is-scrolled .header-bar .nav-link:focus-visible,
-header.site-header.is-scrolled .header-bar .nav-link.active {
   background: #f0f0f4;
   color: var(--elite-ink);
+}
+/* Só na home e só antes de rolar: ali o header flutua sobre o herói escuro,
+   onde uma barra clara viraria um bloco branco no meio da arte. */
+body.home header.site-header:not(.is-scrolled) .header-bar {
+  background: rgba(18, 18, 22, 0.55);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+}
+body.home header.site-header:not(.is-scrolled) .header-bar .nav-link,
+body.home header.site-header:not(.is-scrolled) .header-bar .header-toggle {
+  color: rgba(255, 255, 255, 0.92);
+}
+body.home header.site-header:not(.is-scrolled) .header-bar .nav-link:hover,
+body.home header.site-header:not(.is-scrolled) .header-bar .nav-link:focus-visible,
+body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
 }
 /* Sem backdrop-filter o vidro não existe: usa fundo sólido para não perder leitura. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   header.site-header .header-bar {
-    background: rgba(18, 18, 22, 0.92);
-  }
-  header.site-header.is-scrolled .header-bar {
     background: rgba(255, 255, 255, 0.97);
+  }
+  body.home header.site-header:not(.is-scrolled) .header-bar {
+    background: rgba(18, 18, 22, 0.92);
   }
 }
 
@@ -479,6 +481,22 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
   }
 }
 
+/* ---- Cabeçalhos de seção (título + botão) ------------------ */
+/* No celular o título e o CTA disputavam a mesma linha e se sobrepunham. */
+@media (max-width: 767.98px) {
+  .section_001 .d-flex.justify-content-between,
+  .conteudos-sugeridos .d-flex.justify-content-between {
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+  .title-main-section {
+    font-size: 27px;
+    line-height: 1.15;
+    margin-bottom: 0;
+    padding-bottom: 6px;
+  }
+}
+
 /* ---- Cards de serviço da home ------------------------------ */
 /* As artes são 1000x1300 (retrato), então o card acompanhava a altura da
    imagem e ficava enorme. Limitar a largura encolhe tudo junto, sem cortar
@@ -491,6 +509,14 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
   font-size: 16px;
   padding: 14px 12px;
   line-height: 1.25;
+}
+/* Dois por linha no celular: as artes ficam estreitas, então o rótulo
+   acompanha para não virar quatro linhas de texto. */
+@media (max-width: 575.98px) {
+  .my-card-site h5 {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
 }
 
 /* ---- Carrossel de banners --------------------------------- */
@@ -599,13 +625,20 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
   }
 }
 
-@media (max-width: 575.98px) {
+/* No celular o banner ocupa a tela inteira: com margem lateral a arte ficava
+   pequena demais para o texto dentro dela ser legível. */
+@media (max-width: 767.98px) {
   .slideshow-wrap {
-    padding: 16px 10px 4px;
+    max-width: none;
+    padding: 0;
   }
   #carouselSlides {
-    border-radius: 16px;
+    border-radius: 0;
+    box-shadow: none;
   }
+}
+
+@media (max-width: 575.98px) {
   #carouselSlides .carousel-control-prev,
   #carouselSlides .carousel-control-next {
     width: 30px;
@@ -621,6 +654,154 @@ header.site-header.is-scrolled .header-bar .nav-link.active {
   #carouselSlides .carousel-control-next-icon {
     font-size: 0.72rem;
   }
+}
+
+/* ---- Página de contatos (destino do "Faça seu orçamento") --- */
+.contatos__lead {
+  max-width: 58ch;
+  color: #4a4a52;
+  font-size: 1.02rem;
+  margin-bottom: 0;
+}
+.contato-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: var(--elite-radius);
+  background: #fff;
+  border: 1px solid #e8e8ee;
+  box-shadow: 0 10px 26px -18px rgba(20, 20, 25, 0.5);
+}
+.contato-card__topo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.contato-card__avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffd84d 0%, var(--elite-gold-deep) 100%);
+  color: var(--elite-ink);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+}
+.contato-card__nome {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--elite-ink);
+}
+.contato-card__cargo {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #62626d;
+}
+.contato-card__fone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  align-self: flex-start;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--elite-ink);
+  text-decoration: none;
+}
+.contato-card__fone i {
+  color: var(--elite-gold-deep);
+  font-size: 0.9rem;
+}
+.contato-card__fone:hover {
+  color: var(--elite-gold-deep);
+}
+.contato-card__acoes {
+  margin-top: auto;
+}
+.btn.btn-zap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  width: 100%;
+  padding: 0.75em 1.2em;
+  border: 0;
+  border-radius: 999px;
+  background: #25d366;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  box-shadow: 0 8px 18px -8px rgba(37, 211, 102, 0.9);
+}
+.btn.btn-zap i {
+  font-size: 1.2em;
+}
+.btn.btn-zap:hover,
+.btn.btn-zap:focus-visible {
+  background: #1fbb59 !important;
+  color: #fff !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn.btn-zap {
+    transition:
+      background-color 0.2s ease,
+      transform 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .btn.btn-zap:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Canais da empresa: faixa escura, para não virar mais uma fileira de cards. */
+.contatos__central {
+  display: grid;
+  gap: 1.25rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  margin-top: 2.25rem;
+  padding: 1.6rem;
+  border-radius: var(--elite-radius);
+  background: var(--elite-ink);
+  color: #f1f1f3;
+}
+.contatos__central-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+.contatos__central-item i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(250, 201, 34, 0.14);
+  color: var(--elite-gold);
+  font-size: 0.9rem;
+}
+.contatos__central-item strong {
+  display: block;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--elite-gold);
+  margin-bottom: 0.15rem;
+}
+.contatos__central-item a,
+.contatos__central-item span {
+  color: #f1f1f3;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-decoration: none;
+}
+.contatos__central-item a:hover {
+  color: var(--elite-gold);
 }
 
 /* ---- Formulário de contato -------------------------------- */

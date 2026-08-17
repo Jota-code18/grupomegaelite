@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import site from '../../data/site.json';
+
+// Destino do botão "Faça seu orçamento" do site inteiro — por isso a página
+// leva os contatos diretos, e não uma tabela.
+const saudacao = encodeURIComponent(
+  'Olá, estou no site da Mega Elite, quero saber mais sobre os serviços!'
+);
+const iniciais = (nome: string) =>
+  nome
+    .split(' ')
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join('')
+    .toUpperCase();
+---
+<Base title="Peça seu orçamento" description="Fale direto com um gerente comercial da Mega Elite.">
+  <Breadcrumbs items={[{ label: 'Telefones' }]} />
+
+  <section class="contatos py-5">
+    <div class="container">
+      <h2 class="title-main-section">Peça seu orçamento<span></span></h2>
+      <p class="contatos__lead">
+        Fale direto com um dos nossos gerentes comerciais — pelo WhatsApp ou por telefone.
+      </p>
+
+      <div class="row g-4 mt-1">
+        {site.equipe_comercial.map((p) => (
+          <div class="col-md-6">
+            <article class="contato-card">
+              <div class="contato-card__topo">
+                <span class="contato-card__avatar" aria-hidden="true">{iniciais(p.nome)}</span>
+                <div>
+                  <h3 class="contato-card__nome">{p.nome}</h3>
+                  <p class="contato-card__cargo">{p.cargo}</p>
+                </div>
+              </div>
+
+              <a class="contato-card__fone" href={`tel:+55${p.whatsapp}`}>
+                <i class="fas fa-phone" aria-hidden="true"></i> {p.telefone}
+              </a>
+
+              <div class="contato-card__acoes">
+                <a
+                  class="btn btn-zap"
+                  href={`https://wa.me/${p.whatsapp}?text=${saudacao}`}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fab fa-whatsapp" aria-hidden="true"></i> Chamar no WhatsApp
+                </a>
+              </div>
+            </article>
+          </div>
+        ))}
+      </div>
+
+      <div class="contatos__central">
+        <div class="contatos__central-item">
+          <i class="fas fa-headset" aria-hidden="true"></i>
+          <div>
+            <strong>Televendas</strong>
+            <a href={`tel:+55${site.topbar.phone.replace(/\D/g, '')}`}>{site.topbar.phone}</a>
+          </div>
+        </div>
+        <div class="contatos__central-item">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          <div>
+            <strong>E-mail</strong>
+            <a href={`mailto:${site.contato.email}`}>{site.contato.email}</a>
+          </div>
+        </div>
+        <div class="contatos__central-item">
+          <i class="fas fa-location-dot" aria-hidden="true"></i>
+          <div>
+            <strong>Onde estamos</strong>
+            <span>{site.topbar.address}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -5,8 +5,15 @@ import Sidebar from '../../components/Sidebar.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
+  // Precisa ficar aqui dentro: o Astro extrai getStaticPaths do componente e
+  // ela não enxerga nada declarado no escopo de fora.
+  // "telefones" tem página própria (src/pages/telefones/), com os contatos em
+  // dados estruturados em vez da tabela que veio do WordPress.
+  const comPaginaPropria = new Set(['telefones']);
   const pages = await getCollection('paginas');
-  return pages.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+  return pages
+    .filter((entry) => !comPaginaPropria.has(entry.data.slug))
+    .map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
 }
 const { entry } = Astro.props;
 ---

@@ -99,6 +99,20 @@ test('páginas internas não ficam escondidas atrás do header fixo', async ({ p
   expect(topo).toBeGreaterThan(60);
 });
 
+test('página de orçamento traz os gerentes com WhatsApp', async ({ page }) => {
+  await page.goto('/telefones/');
+  const cartoes = page.locator('.contato-card');
+  await expect(cartoes).toHaveCount(2);
+  await expect(cartoes.filter({ hasText: 'Bruno Mendes' })).toBeVisible();
+  await expect(cartoes.filter({ hasText: 'Iram' })).toBeVisible();
+
+  const zap = page.locator('.btn-zap').first();
+  const href = (await zap.getAttribute('href')) ?? '';
+  expect(href).toContain('wa.me/5562992309119');
+  // A tabela antiga trazia uma quebra de linha no meio da URL do WhatsApp.
+  expect(href).not.toMatch(/\s/);
+});
+
 test('404 renderiza a página de erro', async ({ page }) => {
   await page.goto('/rota-inexistente-xyz-123', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('h1')).toContainText('404');
