@@ -1,17 +1,15 @@
 ---
-import site from '../data/site.json';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Seo from '../components/Seo.astro';
+import type { Props as SeoProps } from '../components/Seo.astro';
 import '../styles/ui.css';
 import '../styles/motion.css';
 
-interface Props {
-  title?: string;
-  description?: string;
+interface Props extends SeoProps {
   bodyClass?: string;
 }
-const { title, description, bodyClass = '' } = Astro.props;
-const fullTitle = title ? `${title} – ${site.name}` : site.name;
+const { bodyClass = '', ...seo } = Astro.props;
 ---
 
 <!doctype html>
@@ -19,8 +17,7 @@ const fullTitle = title ? `${title} – ${site.name}` : site.name;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {description && <meta name="description" content={description} />}
-    <title>{fullTitle}</title>
+    <Seo {...seo} />
 
     <!-- Ativa o motion antes do paint (evita flash) — só se o usuário não pediu menos movimento -->
     <script is:inline>

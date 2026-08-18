@@ -1,0 +1,126 @@
+---
+import site from '../data/site.json';
+
+/**
+ * Metadados de uma página: título, descrição, canônica, redes sociais e os
+ * dados estruturados (JSON-LD) que alimentam tanto o Google quanto os
+ * buscadores com IA (AEO/GEO).
+ */
+export interface Props {
+  title?: string;
+  description?: string;
+  /** Caminho da imagem de compartilhamento, relativo à raiz. */
+  image?: string;
+  /** 'website' para páginas, 'article' para notícias. */
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  /** Blocos JSON-LD específicos da página (serviço, FAQ, artigo...). */
+  schemas?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.seo.descricaoPadrao,
+  image = site.seo.imagemPadrao,
+  type = 'website',
+  publishedTime,
+  schemas = [],
+  noindex = false,
+} = Astro.props;
+
+const tituloCompleto = title ? `${title} | ${site.seo.marca}` : site.seo.tituloPadrao;
+const canonica = new URL(Astro.url.pathname, Astro.site ?? 'https://grupomegaelite.com.br');
+// URLs canônicas sempre com barra final, menos os posts que terminam em .html.
+if (!canonica.pathname.endsWith('/') && !canonica.pathname.endsWith('.html')) {
+  canonica.pathname += '/';
+}
+const imagemAbsoluta = new URL(image, canonica).href;
+
+// Identidade da empresa: repetida em toda página para o Google e as IAs
+// entenderem quem é, o que faz e onde atende, sem depender de uma página só.
+const negocio = {
+  '@type': 'SecurityService',
+  '@id': `${site.seo.url}/#empresa`,
+  name: site.seo.marca,
+  alternateName: ['Grupo Elite', 'Grupo Mega Elite', 'Mega Elite Segurança'],
+  url: site.seo.url,
+  telephone: `+55${site.topbar.phone.replace(/\D/g, '')}`,
+  email: site.contato.email,
+  image: `${site.seo.url}${site.seo.imagemPadrao}`,
+  logo: `${site.seo.url}/img/logo-grande.png`,
+  description: site.seo.descricaoPadrao,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'R. A, Qd 15 Lt 02 - Cidade Jardim',
+    addressLocality: 'Anápolis',
+    addressRegion: 'GO',
+    postalCode: '75080-730',
+    addressCountry: 'BR',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: -16.3150548, longitude: -48.9470679 },
+  areaServed: site.seo.regioes.map((n: string) => ({ '@type': 'City', name: n })),
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ],
+    opens: '00:00',
+    closes: '23:59',
+  },
+  sameAs: [site.socials.facebook, site.socials.instagram],
+  makesOffer: site.seo.servicos.map((s: string) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: s },
+  })),
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${site.seo.url}/#site`,
+  url: site.seo.url,
+  name: site.seo.marca,
+  inLanguage: 'pt-BR',
+  publisher: { '@id': `${site.seo.url}/#empresa` },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [negocio, website, ...schemas],
+};
+---
+
+<title>{tituloCompleto}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonica.href} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+<meta name="author" content={site.seo.marca} />
+<meta name="geo.region" content="BR-GO" />
+<meta name="geo.placename" content="Anápolis" />
+<meta name="theme-color" content="#16161a" />
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.seo.marca} />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:title" content={tituloCompleto} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonica.href} />
+<meta property="og:image" content={imagemAbsoluta} />
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={tituloCompleto} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imagemAbsoluta} />
+
+{site.seo.googleSiteVerification && (
+  <meta name="google-site-verification" content={site.seo.googleSiteVerification} />
+)}
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />

@@ -16,12 +16,22 @@ const iniciais = (nome: string) =>
     .join('')
     .toUpperCase();
 ---
-<Base title="Peça seu orçamento" description="Fale direto com um gerente comercial da Mega Elite.">
+<Base
+  title="Peça seu Orçamento — Telefones e WhatsApp"
+  description="Telefones e WhatsApp dos gerentes comerciais do Grupo Mega Elite em Anápolis. Peça orçamento de vigilância, portaria ou monitoramento."
+  schemas={[
+    {
+      '@type': 'ContactPage',
+      name: 'Telefones e orçamento — Grupo Mega Elite',
+      mainEntity: { '@id': 'https://grupomegaelite.com.br/#empresa' },
+    },
+  ]}
+>
   <Breadcrumbs items={[{ label: 'Telefones' }]} />
 
   <section class="contatos py-5">
     <div class="container">
-      <h2 class="title-main-section">Peça seu orçamento<span></span></h2>
+      <h1 class="title-main-section">Peça seu orçamento<span></span></h1>
       <p class="contatos__lead">
         Fale direto com um dos nossos gerentes comerciais — pelo WhatsApp ou por telefone.
       </p>

@@ -317,8 +317,22 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* É decoração: não recebe toque nem clique, então nunca revela controles. */
+  pointer-events: none;
   -webkit-mask-image: linear-gradient(95deg, #000 0%, #000 60%, transparent 92%);
   mask-image: linear-gradient(95deg, #000 0%, #000 60%, transparent 92%);
+}
+/* O iOS desenha um botão de play gigante por cima de vídeo que ele considera
+   parado. Some com ele e com o resto dos controles nativos. */
+.hero-elite__video::-webkit-media-controls,
+.hero-elite__video::-webkit-media-controls-panel,
+.hero-elite__video::-webkit-media-controls-start-playback-button,
+.hero-elite__video::-webkit-media-controls-play-button,
+.hero-elite__video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  opacity: 0;
 }
 .hero-elite__model {
   position: relative;
@@ -505,15 +519,38 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
   max-width: 260px;
   margin-inline: auto;
 }
-.my-card-site h5 {
+/* Os rótulos viraram <h3> (a ordem h2 -> h5 pulava níveis). O tema antigo só
+   estilizava h5, então o visual é reproduzido aqui. */
+.my-card-site h3 {
+  text-align: center;
+  margin: 0;
+  font-weight: bold;
+  color: var(--cor2, #2a2a2e);
+  background: var(--cor1, #fac922);
+  border-top: 3px solid #fff;
+  border-radius: 0 0 20px 20px;
   font-size: 16px;
   padding: 14px 12px;
   line-height: 1.25;
 }
+.card-noticias-home h3 {
+  text-align: center;
+  margin: 0;
+  font-size: 18px;
+  color: var(--cor1, #fac922);
+  background: var(--cor2, #2a2a2e);
+  padding: 18px;
+  line-height: 1.3;
+  border-top: 2px solid var(--cor1, #fac922);
+  border-radius: 0 0 20px 20px;
+}
+.card-noticias-home a {
+  text-decoration: none;
+}
 /* Dois por linha no celular: as artes ficam estreitas, então o rótulo
    acompanha para não virar quatro linhas de texto. */
 @media (max-width: 575.98px) {
-  .my-card-site h5 {
+  .my-card-site h3 {
     font-size: 13px;
     padding: 10px 8px;
   }

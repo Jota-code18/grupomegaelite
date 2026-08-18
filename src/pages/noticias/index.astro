@@ -9,13 +9,16 @@ const noticias = (await getCollection('noticias')).sort(
   (a, b) => (b.data.date || '').localeCompare(a.data.date || '')
 );
 ---
-<Base title="Notícias">
+<Base
+  title="Notícias sobre Segurança Patrimonial"
+  description="Conteúdos do Grupo Mega Elite sobre segurança patrimonial: controle de acessos, compliance, tecnologia e proteção de empresas e condomínios."
+>
   <Breadcrumbs items={[{ label: 'Notícias' }]} />
   <div class="container mt-4">
     <div class="row">
       <div class="col-lg-9 col-md-9">
         <header class="mb-5">
-          <h1 class="display-5 fw-bold mb-3">Notícias</h1>
+          <h1 class="display-5 fw-bold mb-3">Notícias e conteúdos sobre segurança</h1>
         </header>
 
         <div class="row g-4 mb-5">

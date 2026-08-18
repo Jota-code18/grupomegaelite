@@ -9,13 +9,30 @@ import Faq from '../components/home/Faq.astro';
 import Localizacao from '../components/Localizacao.astro';
 import { getCollection } from 'astro:content';
 
+import { textoLimpo } from '../lib/text';
+
 const servicos = (await getCollection('servicos')).sort(
   (a, b) => (a.data.date || '').localeCompare(b.data.date || '')
 );
 const noticias = await getCollection('noticias');
 const faqs = await getCollection('faq');
+
+// As perguntas da home viram FAQPage: é o formato que o Google usa para
+// responder direto na busca e que as IAs leem para citar a empresa.
+const faqSchema = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.slice(0, 6).map((f) => ({
+    '@type': 'Question',
+    name: f.data.title,
+    acceptedAnswer: { '@type': 'Answer', text: textoLimpo(f.data.html) },
+  })),
+};
 ---
-<Base bodyClass="home">
+<Base
+  bodyClass="home"
+  schemas={[faqSchema]}
+  description="Segurança privada em Anápolis há 30 anos: vigilância armada, portaria presencial e remota, monitoramento 24h e escolta armada. Peça seu orçamento."
+>
   <Hero />
   <Slideshow />
   <Servicos items={servicos.slice(0, 4)} />

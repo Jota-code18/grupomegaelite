@@ -4,11 +4,21 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Localizacao from '../../components/Localizacao.astro';
 import site from '../../data/site.json';
 ---
-<Base title="Contato">
+<Base
+  title="Contato"
+  description="Fale com o Grupo Mega Elite em Anápolis: WhatsApp (62) 3317-1501, e-mail e endereço na Cidade Jardim. Peça seu orçamento de segurança."
+  schemas={[
+    {
+      '@type': 'ContactPage',
+      name: 'Contato — Grupo Mega Elite',
+      mainEntity: { '@id': 'https://grupomegaelite.com.br/#empresa' },
+    },
+  ]}
+>
   <Breadcrumbs items={[{ label: 'Contato' }]} />
   <section class="py-5">
     <div class="container">
-      <h2 class="title-main-section">Fale com a gente!<span></span></h2>
+      <h1 class="title-main-section">Fale com a gente!<span></span></h1>
       <p>
         Estamos prontos para atender você pelo
         <a href={site.contato.whatsapp_link} target="_blank" rel="noopener" style="color:#25D366; text-decoration:none;">{site.contato.whatsapp_display}</a>,

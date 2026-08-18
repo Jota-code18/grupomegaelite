@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/home/Faq.astro';
 import { getCollection } from 'astro:content';
+import { metaDescricao, textoLimpo } from '../../lib/text';
 
 export async function getStaticPaths() {
   const items = await getCollection('faq');
@@ -10,8 +11,23 @@ export async function getStaticPaths() {
 }
 const { entry } = Astro.props;
 const faqs = (await getCollection('faq')).slice(0, 6);
+const resposta = textoLimpo(entry.data.html);
+
+// Pergunta isolada em QAPage: é assim que buscadores com IA extraem a resposta.
+const perguntaSchema = {
+  '@type': 'QAPage',
+  mainEntity: {
+    '@type': 'Question',
+    name: entry.data.title,
+    acceptedAnswer: { '@type': 'Answer', text: resposta },
+  },
+};
 ---
-<Base title={entry.data.title}>
+<Base
+  title={entry.data.title}
+  description={metaDescricao(entry.data.html)}
+  schemas={[perguntaSchema]}
+>
   <Breadcrumbs items={[{ label: 'Faq', href: '/faq/' }, { label: entry.data.title }]} />
   <div class="container">
     <div class="row mb-3">

@@ -1,6 +1,23 @@
 {
   "name": "Mega Elite",
   "blogname": "MegaElite-SITE",
+  "seo": {
+    "marca": "Grupo Mega Elite",
+    "url": "https://grupomegaelite.com.br",
+    "tituloPadrao": "Grupo Mega Elite | Segurança, Vigilância e Portaria em Anápolis-GO",
+    "descricaoPadrao": "Empresa de segurança privada em Anápolis e região há 30 anos: vigilância armada, portaria presencial e remota, monitoramento 24h e escolta armada.",
+    "imagemPadrao": "/videos/escudo-poster.jpg",
+    "googleSiteVerification": "",
+    "regioes": ["Anápolis", "Goiânia", "Goianésia", "Goiás"],
+    "servicos": [
+      "Vigilância armada e desarmada",
+      "Portaria presencial e remota",
+      "Monitoramento de alarmes e câmeras 24h",
+      "Escolta armada",
+      "Limpeza profissional",
+      "Venda e instalação de equipamentos de segurança"
+    ]
+  },
   "topbar": {
     "address": "R. A, Qd15 Lt02 - Cidade Jardim, Anápolis - GO, 75080-730",
     "phone_label": "Televendas",

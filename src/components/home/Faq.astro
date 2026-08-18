@@ -18,7 +18,7 @@ const { items } = Astro.props;
             const i = idx + 1;
             return (
               <div class="accordion-item">
-                <h2 class="accordion-header" id={`heading${i}`}>
+                <h3 class="accordion-header" id={`heading${i}`}>
                   <button
                     class={`accordion-button ${i === 1 ? '' : 'collapsed'}`}
                     type="button"
@@ -28,7 +28,7 @@ const { items } = Astro.props;
                     aria-controls={`collapse${i}`}>
                     {f.data.title}
                   </button>
-                </h2>
+                </h3>
                 <div id={`collapse${i}`} class={`accordion-collapse collapse ${i === 1 ? 'show' : ''}`} aria-labelledby={`heading${i}`} data-bs-parent="#faqAccordion">
                   <div class="accordion-body" set:html={f.data.html}></div>
                 </div>

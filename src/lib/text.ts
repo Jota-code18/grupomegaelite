@@ -11,6 +11,28 @@ export function stripHtml(html: string): string {
     .trim();
 }
 
+/** Texto puro, com entidades HTML resolvidas — para meta tags e JSON-LD. */
+export function textoLimpo(html: string): string {
+  return stripHtml(html)
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;|&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** Descrição para meta tag: texto limpo cortado em ~155 caracteres. */
+export function metaDescricao(html: string, limite = 155): string {
+  const texto = textoLimpo(html);
+  if (texto.length <= limite) return texto;
+  const corte = texto.slice(0, limite);
+  const ultimoEspaco = corte.lastIndexOf(' ');
+  return `${corte.slice(0, ultimoEspaco > 0 ? ultimoEspaco : limite).replace(/[.,;:]$/, '')}…`;
+}
+
 /** Gera um resumo com no máximo `words` palavras, com reticências se cortar. */
 export function excerpt(html: string, words = 25): string {
   const parts = stripHtml(html).split(' ').filter(Boolean);

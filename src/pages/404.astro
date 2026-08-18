@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 const recent = (await getCollection('noticias')).slice(0, 5);
 ---
-<Base title="Página não encontrada">
+<Base title="Página não encontrada" description="A página que você procura não existe." noindex>
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10">

@@ -19,7 +19,7 @@ const { items } = Astro.props;
                 <a href={`/noticias/${n.data.slug}.html`}><img src={n.data.image} class="img-fluid" alt={n.data.title} /></a>
               )}
               <div class="card-body">
-                <h5 class="card-title">{n.data.title}</h5>
+                <h3 class="card-title h5">{n.data.title}</h3>
                 <p class="card-text">{excerpt(n.data.html, 15)}</p>
                 <a href={`/noticias/${n.data.slug}.html`} class="btn btn-sm btn-warning text-dark fw-semibold">Ler mais</a>
               </div>

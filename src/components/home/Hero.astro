@@ -11,6 +11,9 @@ import site from '../../data/site.json';
       muted
       loop
       playsinline
+      webkit-playsinline
+      disablepictureinpicture
+      disableremoteplayback
       preload="metadata"
       poster="/videos/escudo-poster.jpg"
       aria-hidden="true"
@@ -46,10 +49,35 @@ import site from '../../data/site.json';
 </section>
 
 <script>
-  // Quem pediu menos movimento fica com o quadro parado (o poster).
   const video = document.querySelector<HTMLVideoElement>('.hero-elite__video');
-  if (video && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    video.removeAttribute('autoplay');
-    video.pause();
+
+  if (video) {
+    const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (semMovimento.matches) {
+      // Quem pediu menos movimento fica com o quadro parado (o poster).
+      video.removeAttribute('autoplay');
+      video.pause();
+    } else {
+      // `muted` precisa valer como propriedade (não só como atributo) para o
+      // navegador liberar o autoplay; sem isso o iOS bloqueia e desenha o
+      // botão de play por cima.
+      video.muted = true;
+      video.defaultMuted = true;
+
+      const tocar = () => {
+        const p = video.play();
+        if (p) p.catch(() => {});
+      };
+
+      tocar();
+      video.addEventListener('canplay', tocar, { once: true });
+      video.addEventListener('loadeddata', tocar, { once: true });
+      // Voltar para a aba (ou reidratar a página do cache) reativa o loop.
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && video.paused) tocar();
+      });
+      window.addEventListener('pageshow', tocar);
+    }
   }
 </script>

@@ -3,15 +3,34 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 
+import { textoLimpo } from '../../lib/text';
+
 const faqs = await getCollection('faq');
+
+const faqSchema = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.data.title,
+    acceptedAnswer: { '@type': 'Answer', text: textoLimpo(f.data.html) },
+  })),
+};
 ---
-<Base title="Perguntas Frequentes">
+<Base
+  title="Perguntas Frequentes sobre Segurança e Portaria"
+  description="Dúvidas sobre vigilantes armados, portaria remota, monitoramento 24h, escolta armada e orçamento: respostas do Grupo Mega Elite em Anápolis."
+  schemas={[faqSchema]}
+>
   <Breadcrumbs items={[{ label: 'Faq' }]} />
   <div class="container">
     <div class="row">
       <div class="col-lg-12 col-md-12">
         <header class="mb-4">
-          <h1 class="display-5 fw-bold mb-3">Faq</h1>
+          <h1 class="display-5 fw-bold mb-3">Perguntas frequentes</h1>
+          <p class="lead text-muted">
+            Dúvidas mais comuns sobre os serviços de segurança, portaria e monitoramento
+            da Mega Elite em Anápolis e região.
+          </p>
         </header>
 
         <div class="accordion mb-4" id="faqAccordion">
