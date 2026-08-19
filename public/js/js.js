@@ -392,17 +392,8 @@ jQuery(document).ready(function($) {
         lastScrollTop = scrollTop;
     });
     
-    // Cookie consent (básico)
-    if (!localStorage.getItem('cookieConsent')) {
-        var cookieBanner = $('<div class="cookie-banner">Este site usa cookies para melhorar sua experiência. <button class="cookie-accept">Aceitar</button></div>');
-        $('body').append(cookieBanner);
-        
-        $('.cookie-accept').click(function() {
-            localStorage.setItem('cookieConsent', 'accepted');
-            cookieBanner.fadeOut();
-        });
-    }
-    
+    // Cookie consent: agora é o componente CookieBanner.astro (com estilo do site).
+
     // Preloader
     $(window).on('load', function() {
         $('.preloader').fadeOut();

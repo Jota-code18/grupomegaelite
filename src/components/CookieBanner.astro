@@ -1,0 +1,38 @@
+---
+// Banner próprio, com a linguagem visual do site. O antigo era injetado pelo
+// js.js herdado do WordPress, sem estilo nenhum (ver public/js/js.js).
+---
+<div class="cookie-elite" id="aviso-cookies" role="dialog" aria-labelledby="cookies-titulo" aria-describedby="cookies-texto" hidden>
+  <div class="cookie-elite__icone" aria-hidden="true"><i class="fas fa-cookie-bite"></i></div>
+  <div class="cookie-elite__texto">
+    <strong id="cookies-titulo">Este site usa cookies</strong>
+    <p id="cookies-texto">
+      Usamos cookies para entender como o site é usado e melhorar sua experiência.
+      Veja nossa <a href="/politica-de-privacidade/">Política de Privacidade</a>.
+    </p>
+  </div>
+  <div class="cookie-elite__acoes">
+    <button type="button" class="btn btn-elite" data-cookies="recusar">Só o essencial</button>
+    <button type="button" class="btn btn-orcamento" data-cookies="aceitar">Aceitar</button>
+  </div>
+</div>
+
+<script>
+  const aviso = document.getElementById('aviso-cookies');
+  if (aviso) {
+    const CHAVE = 'cookieConsent';
+    if (!localStorage.getItem(CHAVE)) {
+      aviso.hidden = false;
+      requestAnimationFrame(() => aviso.classList.add('is-visivel'));
+    }
+    for (const botao of aviso.querySelectorAll<HTMLButtonElement>('[data-cookies]')) {
+      botao.addEventListener('click', () => {
+        localStorage.setItem(CHAVE, botao.dataset.cookies === 'aceitar' ? 'accepted' : 'essential');
+        aviso.classList.remove('is-visivel');
+        aviso.addEventListener('transitionend', () => (aviso.hidden = true), { once: true });
+        // Sem transição (reduced motion) o transitionend não dispara.
+        setTimeout(() => (aviso.hidden = true), 400);
+      });
+    }
+  }
+</script>

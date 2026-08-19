@@ -7,9 +7,9 @@ const { items } = Astro.props;
 {items.length > 0 && (
   <div class="container" style="margin-bottom:60px;">
     <div class="conteudos-sugeridos mt-5">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="secao-cabecalho">
         <h2 class="title-main-section">Conteúdo Sugerido <span></span></h2>
-        <a href="/noticias/" class="btn btn-primary" style="color:#111; font-weight: bold;">Veja Mais</a>
+        <a href="/noticias/" class="btn btn-elite">Veja Mais</a>
       </div>
       <div class="row">
         {items.map((n) => (
@@ -21,7 +21,7 @@ const { items } = Astro.props;
               <div class="card-body">
                 <h3 class="card-title h5">{n.data.title}</h3>
                 <p class="card-text">{excerpt(n.data.html, 15)}</p>
-                <a href={`/noticias/${n.data.slug}.html`} class="btn btn-sm btn-warning text-dark fw-semibold">Ler mais</a>
+                <a href={`/noticias/${n.data.slug}.html`} class="btn btn-elite">Ler mais</a>
               </div>
             </div>
           </div>

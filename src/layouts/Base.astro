@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import Seo from '../components/Seo.astro';
 import type { Props as SeoProps } from '../components/Seo.astro';
 import '../styles/ui.css';
@@ -68,6 +69,8 @@ const { bodyClass = '', ...seo } = Astro.props;
     </main>
 
     <Footer />
+
+    <CookieBanner />
 
     <script is:inline src="/js/jquery.min.js"></script>
     <script is:inline src="/js/bootstrap.bundle.min.js"></script>

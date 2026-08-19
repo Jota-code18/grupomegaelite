@@ -1,21 +1,59 @@
 ---
 import site from '../data/site.json';
+
+// Rota traçada a partir do endereço real, para abrir no app de mapas do visitante.
+const rota = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+  `Mega Elite Segurança, ${site.topbar.address}`
+)}`;
 ---
-<section class="localizacao">
+<section class="localizacao-elite" aria-labelledby="onde-estamos">
   <div class="container">
-    <div class="row">
-      <div class="col-md-3 mx-auto text-center">
-        <h2 class="title-main-section">Onde Estamos<span></span></h2>
+    <div class="secao-cabecalho">
+      <h2 class="title-main-section" id="onde-estamos">Onde estamos<span></span></h2>
+      <a href={rota} target="_blank" rel="noopener" class="btn btn-elite">
+        <i class="fas fa-diamond-turn-right" aria-hidden="true"></i> Traçar rota
+      </a>
+    </div>
+
+    <div class="localizacao-elite__grid">
+      <div class="localizacao-elite__mapa">
+        <iframe
+          src={site.maps_embed}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa com a localização da Mega Elite em Anápolis"></iframe>
       </div>
+
+      <ul class="localizacao-elite__dados">
+        <li>
+          <i class="fas fa-location-dot" aria-hidden="true"></i>
+          <div>
+            <strong>Endereço</strong>
+            <span>{site.topbar.address}</span>
+          </div>
+        </li>
+        <li>
+          <i class="fas fa-phone" aria-hidden="true"></i>
+          <div>
+            <strong>Televendas</strong>
+            <a href={`tel:+55${site.topbar.phone.replace(/\D/g, '')}`}>{site.topbar.phone}</a>
+          </div>
+        </li>
+        <li>
+          <i class="fab fa-whatsapp" aria-hidden="true"></i>
+          <div>
+            <strong>WhatsApp</strong>
+            <a href={site.contato.whatsapp_link} target="_blank" rel="noopener">Falar agora</a>
+          </div>
+        </li>
+        <li>
+          <i class="fas fa-tower-broadcast" aria-hidden="true"></i>
+          <div>
+            <strong>Central de monitoramento</strong>
+            <span>24 horas, todos os dias</span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
-  <iframe
-    src={site.maps_embed}
-    width="100%"
-    height="600"
-    style="border:0;"
-    allowfullscreen
-    loading="lazy"
-    referrerpolicy="no-referrer-when-downgrade"
-    title="Localização Mega Elite"></iframe>
 </section>

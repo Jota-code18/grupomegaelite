@@ -1,24 +1,25 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { items: CollectionEntry<'servicos'>[]; }
+import CardServico from '../CardServico.astro';
+
+interface Props {
+  items: CollectionEntry<'servicos'>[];
+}
 const { items } = Astro.props;
 ---
 <section class="section_001">
   <div class="container">
-    <div class="d-flex align-items-center justify-content-between">
+    <div class="secao-cabecalho">
       <h2 class="title-main-section">Protegendo hoje, pensando no amanhã. <span></span></h2>
       <a href="/telefones/" class="btn btn-orcamento">
         <i class="fab fa-whatsapp" aria-hidden="true"></i> FAÇA SEU ORÇAMENTO
       </a>
     </div>
 
-    <div class="row">
+    <div class="row g-4">
       {items.map((s) => (
-        <div class="col-6 col-md-3 mb-4">
-          <div class="my-card-site">
-            <a href={`/servicos/${s.data.slug}.html`}><figure><img src={s.data.image} alt={s.data.title} /></figure></a>
-            <a href={`/servicos/${s.data.slug}.html`}><h3>{s.data.title}</h3></a>
-          </div>
+        <div class="col-6 col-md-3">
+          <CardServico servico={s} nivel={3} />
         </div>
       ))}
     </div>

@@ -521,7 +521,13 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
 }
 /* Os rótulos viraram <h3> (a ordem h2 -> h5 pulava níveis). O tema antigo só
    estilizava h5, então o visual é reproduzido aqui. */
-.my-card-site h3 {
+.my-card-site :is(h2, h3) {
+  /* Os rótulos variam de 1 a 3 linhas; centralizar dentro de uma altura
+     mínima mantém a base dos cards alinhada na grade. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
   text-align: center;
   margin: 0;
   font-weight: bold;
@@ -533,7 +539,7 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
   padding: 14px 12px;
   line-height: 1.25;
 }
-.card-noticias-home h3 {
+.card-noticias-home :is(h2, h3) {
   text-align: center;
   margin: 0;
   font-size: 18px;
@@ -550,9 +556,10 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
 /* Dois por linha no celular: as artes ficam estreitas, então o rótulo
    acompanha para não virar quatro linhas de texto. */
 @media (max-width: 575.98px) {
-  .my-card-site h3 {
+  .my-card-site :is(h2, h3) {
     font-size: 13px;
     padding: 10px 8px;
+    min-height: 56px;
   }
 }
 
@@ -866,5 +873,258 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
 @media (prefers-reduced-motion: reduce) {
   .hero-elite__spinner span {
     animation: none;
+  }
+}
+
+/* ---- Cabeçalho de seção (padrão em todas as seções) -------- */
+/* Título + ação na mesma linha no desktop; empilhados e alinhados à
+   esquerda no celular, onde não cabem lado a lado. */
+.secao-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.secao-cabecalho .title-main-section {
+  margin: 0;
+  padding: 15px 0;
+}
+@media (max-width: 575.98px) {
+  .secao-cabecalho {
+    align-items: flex-start;
+  }
+  .secao-cabecalho .title-main-section {
+    font-size: 28px;
+  }
+}
+
+/* ---- Botão secundário -------------------------------------- */
+/* Mesma família do .btn-orcamento (pílula, mesma tipografia), porém discreto:
+   é para "ver mais", não para converter. Substitui os btn-primary/btn-warning
+   herdados do tema, que destoavam entre si. */
+.btn.btn-elite {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1.15em;
+  border: 1.5px solid var(--elite-ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--elite-ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  text-decoration: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn.btn-elite {
+    transition:
+      background-color 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease;
+  }
+}
+.btn.btn-elite:hover,
+.btn.btn-elite:focus-visible {
+  background: var(--elite-ink) !important;
+  border-color: var(--elite-ink);
+  color: var(--elite-gold) !important;
+}
+/* Sobre fundo escuro (seção da empresa, cards de notícia) inverte. */
+.btn.btn-elite--claro {
+  border-color: var(--elite-gold);
+  color: var(--elite-gold);
+}
+.btn.btn-elite--claro:hover,
+.btn.btn-elite--claro:focus-visible {
+  background: var(--elite-gold) !important;
+  border-color: var(--elite-gold);
+  color: var(--elite-ink) !important;
+}
+
+/* ---- Localização ------------------------------------------- */
+/* Antes era um iframe de 600px ocupando a largura inteira: dominava o rodapé
+   sem dizer nada além do mapa. Agora o mapa divide espaço com os dados de
+   contato, que é o que a pessoa procura ali. */
+.localizacao-elite {
+  background: #fff;
+  border-top: 1px solid #eee;
+  padding: 48px 0 56px;
+}
+.localizacao-elite__grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.localizacao-elite__mapa {
+  border-radius: var(--elite-radius);
+  overflow: hidden;
+  box-shadow: 0 14px 32px -20px rgba(20, 20, 25, 0.55);
+  border: 1px solid #e8e8ee;
+  min-height: 320px;
+}
+.localizacao-elite__mapa iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+}
+.localizacao-elite__dados {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  align-content: center;
+}
+.localizacao-elite__dados li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #f7f7fa;
+  border: 1px solid #ececf2;
+}
+.localizacao-elite__dados i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--elite-ink);
+  color: var(--elite-gold);
+  font-size: 0.9rem;
+}
+.localizacao-elite__dados strong {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6a6a76;
+  margin-bottom: 2px;
+}
+.localizacao-elite__dados span,
+.localizacao-elite__dados a {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--elite-ink);
+  text-decoration: none;
+}
+.localizacao-elite__dados a:hover {
+  color: var(--elite-gold-deep);
+  text-decoration: underline;
+}
+@media (max-width: 767.98px) {
+  .localizacao-elite__grid {
+    grid-template-columns: 1fr;
+  }
+  .localizacao-elite__mapa,
+  .localizacao-elite__mapa iframe {
+    min-height: 240px;
+  }
+}
+
+/* ---- Aviso de cookies -------------------------------------- */
+.cookie-elite {
+  position: fixed;
+  z-index: 1040;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  margin-inline: auto;
+  max-width: 720px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: var(--elite-radius);
+  background: rgba(18, 18, 22, 0.94);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 44px -20px rgba(0, 0, 0, 0.85);
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transform: translateY(12px);
+}
+.cookie-elite.is-visivel {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cookie-elite {
+    transition:
+      opacity 0.32s ease,
+      transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+}
+.cookie-elite__icone {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--elite-gold);
+  color: var(--elite-ink);
+  font-size: 1.1rem;
+}
+.cookie-elite__texto {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.cookie-elite__texto strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.cookie-elite__texto p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.cookie-elite__texto a {
+  color: var(--elite-gold);
+}
+.cookie-elite__acoes {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+/* No escuro, o botão secundário precisa da variante clara. */
+.cookie-elite .btn.btn-elite {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.9);
+}
+.cookie-elite .btn.btn-elite:hover,
+.cookie-elite .btn.btn-elite:focus-visible {
+  background: #fff !important;
+  border-color: #fff;
+  color: var(--elite-ink) !important;
+}
+@media (max-width: 575.98px) {
+  .cookie-elite {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cookie-elite__icone {
+    display: none;
+  }
+  .cookie-elite__acoes {
+    width: 100%;
+  }
+  .cookie-elite__acoes .btn {
+    flex: 1 1 0;
+    justify-content: center;
   }
 }

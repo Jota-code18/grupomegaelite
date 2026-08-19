@@ -16,7 +16,8 @@ test('home carrega com título e menu', async ({ page }) => {
 
 test('serviço abre com a URL .html preservada', async ({ page }) => {
   await page.goto('/servicos/');
-  await page.locator('a.title-servicos-page', { hasText: 'Escolta Armada' }).click();
+  // Por papel/nome: não depende da classe do card, que é compartilhada com a home.
+  await page.getByRole('link', { name: 'Escolta Armada', exact: true }).click();
   await expect(page).toHaveURL(/\/servicos\/escolta-armada\.html$/);
   await expect(page.locator('h1')).toContainText('Escolta Armada');
 });

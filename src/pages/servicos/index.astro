@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CardServico from '../../components/CardServico.astro';
 import { getCollection } from 'astro:content';
 
 const servicos = (await getCollection('servicos')).sort(
@@ -38,14 +39,7 @@ const listaSchema = {
         <div class="row g-4 mb-5">
           {servicos.map((s) => (
             <div class="col-6 col-md-4">
-              <article class="card shadow-sm">
-                <div class="card-img-top">
-                  <a href={`/servicos/${s.data.slug}.html`} class="d-block">
-                    <img src={s.data.image} class="img-fluid" alt={s.data.title} />
-                  </a>
-                </div>
-                <a class="title-servicos-page" href={`/servicos/${s.data.slug}.html`}>{s.data.title}</a>
-              </article>
+              <CardServico servico={s} nivel={2} />
             </div>
           ))}
         </div>

@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  servico: CollectionEntry<'servicos'>;
+  /** Nível do título dentro da página, para a hierarquia não pular degraus:
+   *  3 quando o card vem sob um <h2> de seção (home), 2 sob o <h1> (aba). */
+  nivel?: 2 | 3;
+}
+const { servico, nivel = 3 } = Astro.props;
+const Titulo = `h${nivel}` as 'h2' | 'h3';
+const href = `/servicos/${servico.data.slug}.html`;
+---
+<article class="my-card-site">
+  <a href={href} tabindex="-1" aria-hidden="true">
+    <figure><img src={servico.data.image} alt="" loading="lazy" decoding="async" /></figure>
+  </a>
+  <a href={href}><Titulo>{servico.data.title}</Titulo></a>
+</article>
