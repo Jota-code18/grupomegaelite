@@ -153,3 +153,17 @@ test('cada gerente tem um avatar identificando quem é', async ({ page }) => {
     }
   }
 });
+
+test('home lista todos os serviços prestados', async ({ page }) => {
+  await abrirHome(page);
+  const cards = page.locator('.section_001 .my-card-site');
+  // Mesma quantidade da aba /servicos/: a home mostrava só uma amostra de 4.
+  await expect(cards).toHaveCount(6);
+  for (const nome of ['Portaria', 'Limpeza Profissional', 'Escolta Armada']) {
+    await expect(cards.filter({ hasText: nome }).first()).toBeVisible();
+  }
+  // Toda arte precisa carregar — card sem imagem fica com um buraco preto.
+  for (const img of await page.locator('.section_001 .my-card-site img').all()) {
+    expect(await img.evaluate((el: HTMLImageElement) => el.naturalWidth > 0)).toBe(true);
+  }
+});

@@ -518,12 +518,23 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
 .my-card-site {
   max-width: 260px;
   margin-inline: auto;
+  /* Preenche a altura da linha da grade: com rótulos de 1 a 3 linhas, só o
+     min-height não bastava (3 linhas passavam dele e desalinhavam a base). */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.my-card-site > a:last-child {
+  display: flex;
+  flex: 1 1 auto;
 }
 /* Os rótulos viraram <h3> (a ordem h2 -> h5 pulava níveis). O tema antigo só
    estilizava h5, então o visual é reproduzido aqui. */
 .my-card-site :is(h2, h3) {
-  /* Os rótulos variam de 1 a 3 linhas; centralizar dentro de uma altura
-     mínima mantém a base dos cards alinhada na grade. */
+  /* O rótulo ocupa a sobra e centraliza o texto, então cards vizinhos
+     terminam na mesma linha mesmo com quantidades de texto diferentes. */
+  flex: 1 1 auto;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

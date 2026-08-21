@@ -109,7 +109,7 @@ const { bodyClass = '', ...seo } = Astro.props;
         document.querySelectorAll('.row').forEach(function (row) {
           var i = 0;
           row.querySelectorAll('.my-card-site, .card-noticias-home').forEach(function (c) {
-            c.style.setProperty('--reveal-delay', (i % 4) * 70 + 'ms');
+            c.style.setProperty('--reveal-delay', (i % 3) * 70 + 'ms');
             i++;
           });
         });
