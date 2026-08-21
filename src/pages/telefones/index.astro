@@ -41,7 +41,12 @@ const iniciais = (nome: string) =>
           <div class="col-md-6">
             <article class="contato-card">
               <div class="contato-card__topo">
-                <span class="contato-card__avatar" aria-hidden="true">{iniciais(p.nome)}</span>
+                <span class="contato-card__avatar" aria-hidden="true">
+                  <span class="contato-card__iniciais">{iniciais(p.nome)}</span>
+                  {p.foto && (
+                    <img class="contato-card__foto" src={p.foto} alt="" width="112" height="112" loading="lazy" decoding="async" onerror="this.remove()" />
+                  )}
+                </span>
                 <div>
                   <h3 class="contato-card__nome">{p.nome}</h3>
                   <p class="contato-card__cargo">{p.cargo}</p>

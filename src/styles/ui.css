@@ -533,7 +533,6 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
   font-weight: bold;
   color: var(--cor2, #2a2a2e);
   background: var(--cor1, #fac922);
-  border-top: 3px solid #fff;
   border-radius: 0 0 20px 20px;
   font-size: 16px;
   padding: 14px 12px;
@@ -724,6 +723,8 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
   gap: 0.9rem;
 }
 .contato-card__avatar {
+  position: relative;
+  overflow: hidden;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
@@ -735,6 +736,16 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
   font-weight: 800;
   font-size: 1.15rem;
   letter-spacing: 0.02em;
+}
+/* A foto cobre as iniciais quando existe; se o arquivo faltar, o onerror
+   descarta a foto e as iniciais reaparecem sozinhas. */
+.contato-card__foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
 }
 .contato-card__nome {
   margin: 0;
@@ -1126,5 +1137,135 @@ body.home header.site-header:not(.is-scrolled) .header-bar .nav-link.active {
   .cookie-elite__acoes .btn {
     flex: 1 1 0;
     justify-content: center;
+  }
+}
+
+/* ---- Rodapé ------------------------------------------------ */
+.rodape-elite {
+  background: var(--elite-ink);
+  color: #d7d7de;
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0 1.5rem;
+}
+.rodape-elite__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.3fr 1.5fr;
+  gap: clamp(1.75rem, 3vw, 3rem);
+}
+.rodape-elite__marca p {
+  margin: 0 0 1.25rem;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  max-width: 34ch;
+}
+.rodape-elite__social {
+  display: flex;
+  gap: 0.6rem;
+}
+.rodape-elite__social a {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--elite-gold);
+  font-size: 1rem;
+  text-decoration: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rodape-elite__social a {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+}
+.rodape-elite__social a:hover,
+.rodape-elite__social a:focus-visible {
+  background: var(--elite-gold);
+  color: var(--elite-ink);
+}
+.rodape-elite__coluna h2 {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--elite-gold);
+}
+.rodape-elite__coluna ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+.rodape-elite__coluna a {
+  color: #d7d7de;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+.rodape-elite__coluna a:hover,
+.rodape-elite__coluna a:focus-visible {
+  color: var(--elite-gold);
+}
+.rodape-elite__contato li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.rodape-elite__contato i {
+  flex: 0 0 auto;
+  margin-top: 0.2rem;
+  width: 1rem;
+  color: var(--elite-gold);
+  font-size: 0.85rem;
+}
+.rodape-elite__base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.rodape-elite__base p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #9a9aa4;
+}
+.rodape-elite__base ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin: 0;
+  padding: 0;
+}
+.rodape-elite__base a {
+  font-size: 0.85rem;
+  color: #9a9aa4;
+  text-decoration: none;
+}
+.rodape-elite__base a:hover,
+.rodape-elite__base a:focus-visible {
+  color: var(--elite-gold);
+}
+@media (max-width: 991.98px) {
+  .rodape-elite__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 575.98px) {
+  .rodape-elite__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .rodape-elite__base {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

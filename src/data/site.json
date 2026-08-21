@@ -23,17 +23,35 @@
     "phone_label": "Televendas",
     "phone": "(62) 3317-1501"
   },
-  "cta": { "label": "FAÇA SEU ORÇAMENTO", "href": "/telefones/" },
+  "cta": {
+    "label": "FAÇA SEU ORÇAMENTO",
+    "href": "/telefones/"
+  },
   "menu": [
-    { "label": "Home", "href": "/" },
-    { "label": "Empresa", "href": "/empresa/" },
-    { "label": "Portaria Remota", "href": "/servicos/portaria.html" },
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Empresa",
+      "href": "/empresa/"
+    },
+    {
+      "label": "Portaria Remota",
+      "href": "/servicos/portaria.html"
+    },
     {
       "label": "Vigilância Armada",
       "href": "/servicos/seguranca-privada-vigilancia-armada-e-desarmada.html"
     },
-    { "label": "Serviços", "href": "/servicos/" },
-    { "label": "Contato", "href": "/contato/" }
+    {
+      "label": "Serviços",
+      "href": "/servicos/"
+    },
+    {
+      "label": "Contato",
+      "href": "/contato/"
+    }
   ],
   "socials": {
     "facebook": "https://www.facebook.com/share/1FDnq1iXFv/",
@@ -53,16 +71,21 @@
       "nome": "Bruno Mendes",
       "cargo": "Gerente Comercial",
       "telefone": "(62) 99230-9119",
-      "whatsapp": "5562992309119"
+      "whatsapp": "5562992309119",
+      "foto": "/img/equipe/bruno.jpg"
     },
     {
       "nome": "Iram",
       "cargo": "Gerente Comercial",
       "telefone": "(62) 99370-4114",
-      "whatsapp": "5562993704114"
+      "whatsapp": "5562993704114",
+      "foto": "/img/equipe/iram.jpg"
     }
   ],
-  "tracking": { "meta_pixel": "2056339778493739", "gtm": "GTM-WJC4HVCR" },
+  "tracking": {
+    "meta_pixel": "2056339778493739",
+    "gtm": "GTM-WJC4HVCR"
+  },
   "empresa_youtube": "pAjrsi8k6IE",
   "maps_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3829.1543693067206!2d-48.9470679!3d-16.3150548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935ea578c026eb51%3A0xe323bab49c2d2afb!2sMega%20Elite%20Seguran%C3%A7a!5e0!3m2!1spt-BR!2sbr!4v1756929389545!5m2!1spt-BR!2sbr",
   "slideshow": [

@@ -24,3 +24,8 @@ coverage/
 test-results/
 playwright-report/
 .playwright-mcp/
+
+# GLB da logo: 126 MB, acima do limite de 100 MB por arquivo do GitHub.
+# Fica só local — serve de fonte para scripts/render-escudo.mjs, e o que
+# o site publica é o vídeo já renderizado em public/videos/.
+_fonte/*.glb

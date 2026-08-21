@@ -10,8 +10,9 @@
  * horizontal, 1 na vertical), então a última imagem encosta na primeira e o
  * loop não tem emenda.
  *
- * Para regerar (o GLB e a página de captura ficam em _fonte/, fora do site
- * publicado, porque pesam 16 MB e ninguém precisa baixá-los):
+ * Para regerar. A página de captura fica em _fonte/; o GLB NÃO é versionado
+ * (126 MB, acima do limite do GitHub) — peça o arquivo ao cliente ou exporte
+ * de novo no Meshy e salve como _fonte/elite-3d.glb:
  *
  *   mkdir -p public/models && cp _fonte/elite-3d.glb public/models/
  *   cp _fonte/render-escudo.astro src/pages/

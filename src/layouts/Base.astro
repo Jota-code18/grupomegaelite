@@ -134,7 +134,7 @@ const { bodyClass = '', ...seo } = Astro.props;
 
         // Imagens: lazy + fade-in + skeleton (pula logos, topbar e o slideshow-herói)
         document.querySelectorAll('img').forEach(function (img) {
-          if (img.closest('.site-header, footer, .footer_02, .topbar, .tarja-logo, #carouselSlides')) return;
+          if (img.closest('.site-header, footer, .topbar, .tarja-logo, #carouselSlides')) return;
           if (!img.hasAttribute('loading')) img.loading = 'lazy';
           img.decoding = 'async';
           img.classList.add('img-fx');

@@ -16,8 +16,9 @@ test('home carrega com título e menu', async ({ page }) => {
 
 test('serviço abre com a URL .html preservada', async ({ page }) => {
   await page.goto('/servicos/');
-  // Por papel/nome: não depende da classe do card, que é compartilhada com a home.
-  await page.getByRole('link', { name: 'Escolta Armada', exact: true }).click();
+  // Dentro de <main>: o rodapé também lista os serviços, e por papel/nome o
+  // teste não depende da classe do card (compartilhada com a home).
+  await page.getByRole('main').getByRole('link', { name: 'Escolta Armada', exact: true }).click();
   await expect(page).toHaveURL(/\/servicos\/escolta-armada\.html$/);
   await expect(page.locator('h1')).toContainText('Escolta Armada');
 });
@@ -117,4 +118,38 @@ test('página de orçamento traz os gerentes com WhatsApp', async ({ page }) => 
 test('404 renderiza a página de erro', async ({ page }) => {
   await page.goto('/rota-inexistente-xyz-123', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('h1')).toContainText('404');
+});
+
+test('rodapé perdeu o texto de e-commerce e o crédito do dev antigo', async ({ page }) => {
+  await page.goto('/contato/');
+  const rodape = page.locator('footer.rodape-elite');
+  await expect(rodape).toBeVisible();
+
+  // Textos herdados do tema WordPress, que não descreviam esta empresa.
+  await expect(rodape).not.toContainText('Preços e condições de pagamento');
+  await expect(rodape).not.toContainText('imagens dos produtos');
+  // O logo do dev anterior era carregado de um domínio de terceiros.
+  await expect(page.locator('img[src*="produtosmatao"]')).toHaveCount(0);
+
+  await expect(rodape.getByRole('link', { name: 'Política de Privacidade' })).toBeVisible();
+  await expect(rodape).toContainText(String(new Date().getFullYear()));
+});
+
+test('cada gerente tem um avatar identificando quem é', async ({ page }) => {
+  await page.goto('/telefones/');
+  const avatares = page.locator('.contato-card__avatar');
+  await expect(avatares).toHaveCount(2);
+
+  for (const avatar of await avatares.all()) {
+    await expect(avatar).toBeVisible();
+    const foto = avatar.locator('.contato-card__foto');
+    if (await foto.count()) {
+      // O onerror remove a <img> quebrada, então toda <img> que sobra carregou.
+      const carregou = await foto.evaluate((el: HTMLImageElement) => el.naturalWidth > 0);
+      expect(carregou).toBe(true);
+    } else {
+      // Sem a foto no disco, as iniciais assumem — o cartão nunca fica vazio.
+      await expect(avatar.locator('.contato-card__iniciais')).toBeVisible();
+    }
+  }
 });
