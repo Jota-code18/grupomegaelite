@@ -15,6 +15,15 @@ quebraria todas as URLs de serviço, notícia e FAQ que o Google já conhece.
 O valor `false` é o padrão da plataforma, mas fica explícito aqui para
 ninguém ligar sem perceber o efeito.
 
+## Nada de `trailingSlash`
+
+A chave fica **ausente** de propósito. As páginas de listagem são pastas
+(`/servicos/index.html`), então a URL canônica leva barra — é assim que o
+sitemap, os links internos e as tags canônicas apontam. Com
+`trailingSlash: false` a Vercel devolve 308 em `/servicos/`, `/contato/` e
+`/telefones/`, cobrando um redirecionamento em cada navegação interna. Sem a
+chave, as duas formas respondem 200.
+
 ## Cache
 
 Imagens, vídeo, CSS e JS não têm hash no nome (vieram do tema antigo), então
