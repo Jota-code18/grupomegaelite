@@ -29,9 +29,19 @@
  *      SÓ nos pixels quentes, para o prata do escudo não virar dourado.
  *   2. troca-textura-glb.py — devolve a textura corrigida ao .glb sem
  *      recomprimir a geometria.
- *   3. material metallic 0.08 / roughness 0.75 e exposure 0.75 na página.
- *   Resultado medido: pixels brancos nas letras caem de 16,6% para 10,7%.
- *   O _fonte/elite-3d.glb já guarda 1 e 2 aplicados.
+ *   3. escurece-cinzas-textura.py — baixa os cinzas MÉDIOS (os contornos
+ *      prateados vinham lavados). Só pixels neutros, com força em sino no
+ *      meio-tom, então o texto branco e os pretos não se movem.
+ *   4. ajusta-material-glb.py — metallic 0.14 / roughness 0.60 e, sobretudo,
+ *      normalTexture.scale 2.0: é o relevo que tira o ar de massinha. A
+ *      rugosidade alta que segurava o estouro era o que achatava o escudo;
+ *      com os cinzas já escuros dá para baixá-la de volta.
+ *   5. exposure 0.70 na página de captura.
+ *
+ *   Medido contra a versão anterior: brancos nas letras 10,7% -> 3,3%,
+ *   brilho médio 76,0 -> 67,4, cinza do topo do escudo 135,8 -> 117,2 e
+ *   nitidez 8,13 -> 8,64 (mais nitidez = menos massinha).
+ *   O _fonte/elite-3d.glb já guarda os passos 1 a 4 aplicados.
  */
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, rmSync } from 'node:fs';
@@ -69,13 +79,15 @@ await pagina.waitForFunction(() => '__pronto' in window, null, { timeout: 120_00
 await pagina.evaluate(() => window.__pronto);
 console.log('modelo carregado; capturando quadros...');
 
-const palco = pagina.locator('#palco');
+// Captura a página, não o elemento: #palco tem exatamente o tamanho da
+// viewport, e a captura de elemento espera "estabilidade" — o que estoura o
+// tempo quando a máquina está ocupada, sem que nada esteja errado no quadro.
 for (let i = 0; i < TOTAL; i++) {
   const t = i / TOTAL; // 0..1 dentro do loop
   const theta = Math.sin(2 * Math.PI * 2 * t) * AMP_THETA; // 2 ciclos
   const phi = BASE_PHI + Math.sin(2 * Math.PI * t + 1) * AMP_PHI; // 1 ciclo
   await pagina.evaluate(([a, b]) => window.__orbita(a, b), [theta, phi]);
-  await palco.screenshot({ path: join(TMP, `f${String(i).padStart(4, '0')}.png`) });
+  await pagina.screenshot({ path: join(TMP, `f${String(i).padStart(4, '0')}.png`) });
   if (i % 40 === 0) console.log(`  ${i}/${TOTAL}`);
 }
 await navegador.close();
