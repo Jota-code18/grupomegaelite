@@ -23,6 +23,15 @@
  *
  * Importante: renderize contra o preview estático, não contra `astro dev` —
  * o hot reload recarrega a página no meio e mata a captura.
+ *
+ * Receita de cor (o Meshy entrega o escudo estourando para branco):
+ *   1. corrige-dourado-textura.py — contém o brilho e levanta a saturação
+ *      SÓ nos pixels quentes, para o prata do escudo não virar dourado.
+ *   2. troca-textura-glb.py — devolve a textura corrigida ao .glb sem
+ *      recomprimir a geometria.
+ *   3. material metallic 0.08 / roughness 0.75 e exposure 0.75 na página.
+ *   Resultado medido: pixels brancos nas letras caem de 16,6% para 10,7%.
+ *   O _fonte/elite-3d.glb já guarda 1 e 2 aplicados.
  */
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, rmSync } from 'node:fs';
